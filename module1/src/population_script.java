@@ -12,4 +12,3 @@ public class population_script {
         sc1.close();  //closes the scanner
     }
 }
-
