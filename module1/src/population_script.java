@@ -4,12 +4,12 @@ import java.util.Scanner;
 public class population_script {
     public static void main(String[] args) throws Exception {
         //parsing a CSV file into Scanner class constructor
-        Scanner sc = new Scanner(new File("F:\\CSVDemo.csv"));
+        Scanner sc1 = new Scanner(new File("data/crew.csv"));
         sc.useDelimiter(",");   //sets the delimiter pattern
-        while (sc.hasNext()) {  //returns a boolean value
-            System.out.print(sc.next());  //find and returns the next complete token from this scanner
+        while (sc1.hasNext()) {  //returns a boolean value
+            System.out.print(sc1.next());  //find and returns the next complete token from this scanner
         }
-        sc.close();  //closes the scanner
+        sc1.close();  //closes the scanner
     }
 }
 
