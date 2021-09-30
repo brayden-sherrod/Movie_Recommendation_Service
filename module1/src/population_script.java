@@ -5,7 +5,7 @@ public class population_script {
     
     /**
      * For a column category, it splits up possible multiple entries
-     * @param pod 
+     * @param pod - String of comma separated elements
      */
     public static void separatePod(String pod) {
         String[] splitPod = pod.split(",");
@@ -18,7 +18,7 @@ public class population_script {
 
     /**
      * Parses through a csv file provided.
-     * @param fileName Name of csv file
+     * @param fileName - Name of csv file
      * @throws FileNotFoundException
      */
     public static void scanFile(String fileName) throws FileNotFoundException {
