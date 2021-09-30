@@ -38,10 +38,19 @@ public class population_script {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        scanFile("../../data/crew.csv");
-        // scanFile("../../data/customer_ratings.csv");
+        //* cleansing
+        //TODO
+        // keep most recent media if there are duplicates
+        // redirect output to a file in folder clean_data
+        scanFile("../../data/crew.csv"); //? starts at 6405819
+//         scanFile("../../data/customer_ratings.csv");
         // scanFile("../../data/names.csv");
         // scanFile("../../data/principals.csv");
         // scanFile("../../data/titles.csv");
     }
 }
+
+
+
+
+
