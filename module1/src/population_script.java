@@ -3,6 +3,35 @@ import java.util.Scanner;
 
 public class population_script {
     
+    /*----------------------------------------ONE FOR EACH CLEANED CSV---------------------------------------*/
+
+    public static void scanCrewMembers() {
+
+    }
+
+    public static void scanCustomersRatings() {
+        
+    }
+
+    public static void scanCustomesrWatchedLists() {
+        
+    }
+
+    public static void scanMediaCollection() {
+        
+    }
+
+    public static void scanMediaCrewMembers() {
+        
+    }
+
+    public static void scanMediaGenres() {
+        // string s;
+        // String[] arrays = s.split(",", 2); 
+    }
+
+    /*-----------------------------------------------------------------------------------------------------*/
+
     /**
      * For a column category, it splits up possible multiple entries
      * @param pod - String of comma separated elements
@@ -22,10 +51,13 @@ public class population_script {
      * @throws FileNotFoundException
      */
     public static void scanFile(String fileName) throws FileNotFoundException {
-        Scanner sc1 = new Scanner(new File("../../data/crew.csv"));
+        Scanner sc1 = new Scanner(new File(fileName));
         sc1.useDelimiter("\n");   // Sets the delimiter pattern
+
+        System.out.println(sc1.next()); // Skips first line
+
         while (sc1.hasNext()) {  // Returns a boolean value
-            String[] splitLine = (sc1.next()).split("\t");   // Splits each line into array
+            String[] splitLine = (sc1.next()).split(",");   // Splits each line into array
             
             // Iterate over array
             for (String pod : splitLine) {
@@ -42,7 +74,7 @@ public class population_script {
         //TODO
         // keep most recent media if there are duplicates
         // redirect output to a file in folder clean_data
-        scanFile("../../data/crew.csv"); //? starts at 6405819
+        scanFile("../../cleanedCSVFIles/crew_member.csv"); //? starts at 6405819
         //scanFile("../../data/customer_ratings.csv");
         //scanFile("../../data/names.csv");
         //scanFile("../../data/principals.csv");
