@@ -80,14 +80,14 @@ public class population_script {
         try{
             System.out.println("Populating CustomersRatings Table...");
             
-            String fileName = "../../cleanedCSVFiles/crew_member.csv";
+            String fileName = "../../cleanedCSVFiles/customers_ratings.csv";
             
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
             
-            int customer_ratings_pk;
+            int customer_ratings_pk = 1;
             String media_ID;
             String customer_ID;
             String customer_rating;
@@ -102,16 +102,12 @@ public class population_script {
                 customer_ID= splitLine[1];
                 customer_rating = splitLine[2];
                     
-
-                // If the name is super weird, then we're going to skip it
-                if ( !(primaryName.matches("[a-zA-Z\s+_.-]+")) ){
-                    continue;
-                }else{
-                    // Populate database
-                    String sqlCommand = "INSERT INTO crewmembers VALUES('" + crewId + "', '" + primaryName + "', '" + birthYear + "');";
-                    Statement stmt = conn.createStatement();
-                    stmt.executeUpdate(sqlCommand);
-                }
+                // Populate database
+                String sqlCommand = "INSERT INTO customersratings VALUES('" + customer_ratings_pk + "', '" + media_ID + "', '" + customer_ID + "');";
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(sqlCommand);
+                
+                customer_ratings_pk++;
             }
 
             // Close the scanner
@@ -215,7 +211,7 @@ public class population_script {
         String dbConnectionString = "jdbc:postgresql://csce-315-db.engr.tamu.edu/" + dbName;
         String userName = "csce315" + sectionNumber + "_" + teamNumber + "user";
         String userPassword = "new_password";
-
+        
         // Connecting to the database
         try {
             conn = DriverManager.getConnection(dbConnectionString, userName, userPassword);
