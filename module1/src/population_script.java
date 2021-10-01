@@ -16,35 +16,82 @@ public class population_script {
     /*----------------------------------------ONE FOR EACH CLEANED CSV---------------------------------------*/
 
     public static void scanCrewMembers(Connection conn) {
+        
+    }
+
+    public static void scanCustomersRatings(Connection conn) {
         try{
+            System.out.println("Creating Table");
             Statement stmt = conn.createStatement();
-            String sqlString = "CREATE TABLE CrewMembers(crewId text PRIMARY KEY, primaryName text, birthYear int);";
+            String sqlString = "CREATE TABLE CustomersRatings(media_ID text, customer_ID int, customer_rating int, date_rated date);";
             stmt.executeUpdate(sqlString);
 
         } catch (Exception e) {
+            System.out.println("Failed to create table.");
 			e.printStackTrace();
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
-		}  
+		} 
     }
 
-    public static void scanCustomersRatings() {
+    public static void scanCustomersWatchedLists(Connection conn) {
+        try{
+            System.out.println("Creating Table");
+            Statement stmt = conn.createStatement();
+            String sqlString = "CREATE TABLE CustomersWatchedList(customerId int PRIMARY KEY, titleId text);";
+            stmt.executeUpdate(sqlString);
 
+        } catch (Exception e) {
+            System.out.println("Failed to create table.");
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		} 
     }
 
-    public static void scanCustomesrWatchedLists() {
+    public static void scanMediaCollection(Connection conn) {
+        try{
+            System.out.println("Creating Table");
+            Statement stmt = conn.createStatement();
+            String sqlString = "CREATE TABLE MediaCollection();";
+            stmt.executeUpdate(sqlString);
 
+        } catch (Exception e) {
+            System.out.println("Failed to create table.");
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		} 
     }
 
-    public static void scanMediaCollection() {
+    public static void scanMediaCrewMembers(Connection conn) {
+        try{
+            System.out.println("Creating Table");
+            Statement stmt = conn.createStatement();
+            String sqlString = "CREATE TABLE MediaCrewMembers();";
+            stmt.executeUpdate(sqlString);
 
+        } catch (Exception e) {
+            System.out.println("Failed to create table.");
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		} 
     }
 
-    public static void scanMediaCrewMembers() {
+    public static void scanMediaGenres(Connection conn) {
+        try{
+            System.out.println("Creating Table");
+            Statement stmt = conn.createStatement();
+            String sqlString = "CREATE TABLE MediaGenres(titleId text PRIMARY KEY, genre);";
+            stmt.executeUpdate(sqlString);
 
-    }
-
-    public static void scanMediaGenres() {
+        } catch (Exception e) {
+            System.out.println("Failed to create table.");
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		} 
         // string s;
         // String[] arrays = s.split(",", 2);
     }
@@ -113,6 +160,7 @@ public class population_script {
         System.out.println("Opened database successfully");
 
 
+        scanCrewMembers(conn);
         
         // * cleansing
         // keep most recent media if there are duplicates
