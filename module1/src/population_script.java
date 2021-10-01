@@ -258,7 +258,45 @@ public class population_script {
 
     // *Need to iterate a primary key
     public static void scanMediaGenres(Connection conn) {
-        
+        // Populate Database
+        try{
+            System.out.println("Populating MediaGenres Table...");
+            
+            String fileName = "../../cleanedCSVFiles/media_genres.csv";
+            
+            Scanner sc = new Scanner(new File(fileName));
+            sc.useDelimiter("\n"); // Sets the delimiter pattern
+
+            sc.next();             // Skips first line
+            
+            int media_genres_pk = 1;
+            String media_ID;
+            String genre;
+            String[] splitLine;
+
+            // Iterate through each line of file
+            while (sc.hasNext()) { 
+                splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
+
+                media_ID = splitLine[0];
+                genre = splitLine[1];
+                    
+                // Populate database
+                String sqlCommand = "INSERT INTO mediagenres VALUES('" + media_genres_pk + "', '" +  media_ID + "', '" + genre + "');";
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(sqlCommand);
+                
+                media_genres_pk++;
+            }
+
+            // Close the scanner
+            sc.close();
+        } catch (Exception e) {
+            System.out.println("Failed to populate MediaGenres table");
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		} 
     }
 
     /*-----------------------------------------------------------------------------------------------------*/
