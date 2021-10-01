@@ -123,21 +123,45 @@ public class population_script {
 
     // *Need to iterate a primary key
     public static void scanCustomersWatchedLists(Connection conn) {
+        // Populate Database
+        try{
+            System.out.println("Populating CustomersWatchedList Table...");
+            
+            String fileName = "../../cleanedCSVFiles/customers_watched_lists.csv";
+            
+            Scanner sc = new Scanner(new File(fileName));
+            sc.useDelimiter("\n"); // Sets the delimiter pattern
 
-        String fileName = "customers_watched_lists.csv";
+            sc.next();             // Skips first line
+            
+            int customer_watched_lists_pk = 1;
+            String customer_ID;
+            String media_ID;
+            String[] splitLine;
 
-        try {
-            System.out.println("Populating Table...");
-            Statement stmt = conn.createStatement();
-            String sqlString = "";
-            stmt.executeUpdate(sqlString);
+            // Iterate through each line of file
+            while (sc.hasNext()) { 
+                splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
 
+                customer_ID= splitLine[0];
+                media_ID = splitLine[1];
+                    
+                // Populate database
+                String sqlCommand = "INSERT INTO customerswatchedlist VALUES('" + customer_watched_lists_pk + "', '" + customer_ID + "', '" + media_ID + "');";
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(sqlCommand);
+                
+                customer_watched_lists_pk++;
+            }
+
+            // Close the scanner
+            sc.close();
         } catch (Exception e) {
-            System.out.println("Failed to populate CustomersWatchedLists table");
-            e.printStackTrace();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
+            System.out.println("Failed to populate CrewMembers table");
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		} 
     }
 
     // * DONT need to iterate a primary key
