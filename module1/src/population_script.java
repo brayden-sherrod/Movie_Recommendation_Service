@@ -192,11 +192,16 @@ public class population_script {
                 runtime = splitLine[3];
                 average_rating = splitLine[4];
 
-                // Populate database
-                String sqlCommand = "INSERT INTO mediacollection VALUES('" + media_ID + "', '" + media_type + "', '" + media_title + "', '" + runtime + "', '" + average_rating + "');";
-                Statement stmt = conn.createStatement();
-                stmt.executeUpdate(sqlCommand);
-
+                // If the name is super weird, then we're going to skip it
+                
+                if ( !(media_title.matches("[0-9a-zA-Z\\s+_.:!?&()-]+")) ){
+                    continue;
+                }else{
+                    // Populate database
+                    String sqlCommand = "INSERT INTO mediacollection VALUES('" + media_ID + "', '" + media_type + "', '" + media_title + "', '" + runtime + "', '" + average_rating + "');";
+                    Statement stmt = conn.createStatement();
+                    stmt.executeUpdate(sqlCommand);
+                }
             }
 
             // Close the scanner
