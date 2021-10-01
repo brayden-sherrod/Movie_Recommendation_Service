@@ -15,7 +15,8 @@ import java.sql.*;
 
 public class population_script {
     /*----------------------------------------ONE FOR EACH CLEANED CSV---------------------------------------*/
-
+    
+    // * DONT need to iterate a primary key
     public static void scanCrewMembers(Connection conn) {
         try{
             System.out.println("Populating CrewMembers Table...");
@@ -187,50 +188,6 @@ public class population_script {
 
     /*-----------------------------------------------------------------------------------------------------*/
 
-    /**
-     * For a column category, it splits up possible multiple entries
-     * 
-     * @param pod - String of comma separated elements
-     */
-    public static void separatePod(String pod) {
-        String[] splitPod = pod.split(",", 2);
-        String media_ID = splitPod[1];
-        String[] splitGenres = splitPod[1].split(",");
-
-        long id = 1;
-        // Iterate over array
-        for (String element : splitGenres) {
-            System.out.print(element + "-");
-            // populate(id, media_ID, element); //TODO: still have to make populate function
-            // that is used here
-            id++;
-        }
-    }
-
-    /**
-     * Parses through a csv file provided.
-     * 
-     * @param fileName - Name of csv file
-     * @throws FileNotFoundException
-     */
-    public static void scanFile(String fileName) throws FileNotFoundException {
-        Scanner sc1 = new Scanner(new File(fileName));
-        sc1.useDelimiter("\n"); // Sets the delimiter pattern
-
-        System.out.println(sc1.next()); // Skips first line
-
-        while (sc1.hasNext()) { // Returns a boolean value
-            String[] splitLine = (sc1.next()).split(","); // Splits each line into array
-
-            // Iterate over array
-            for (String pod : splitLine) {
-                separatePod(pod);
-                System.out.print("|");
-            }
-            System.out.println();
-        }
-        sc1.close(); // Closes the scanner
-    }
 
     public static void main(String[] args) throws FileNotFoundException {
 
@@ -260,18 +217,18 @@ public class population_script {
 
         scanCrewMembers(conn);
 
-        // * cleansing
-        // keep most recent media if there are duplicates
-        // redirect output to a file in folder clean_data
-        // scanFile("../../cleanedCSVFiles/crew_member.csv"); // ? starts at 6405819
-        // scanFile("../../data/customer_ratings.csv");
-        // scanFile("../../data/names.csv");
-        // scanFile("../../data/principals.csv");
-        // scanFile("../../data/titles.csv");
+        // Call functions to populate date
+            // * cleansing
+            // keep most recent media if there are duplicates
+            // redirect output to a file in folder clean_data
+            // scanFile("../../cleanedCSVFiles/crew_member.csv"); // ? starts at 6405819
+            // scanFile("../../data/customer_ratings.csv");
+            // scanFile("../../data/names.csv");
+            // scanFile("../../data/principals.csv");
+            // scanFile("../../data/titles.csv");
 
-        // closing the connection
+        // Closing the connection
         System.out.println("Closing the connection");
-
         try {
             conn.close();
             System.out.println("Connection Closed.");
