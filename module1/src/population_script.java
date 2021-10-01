@@ -36,20 +36,26 @@ public class population_script {
             // Iterate through each line of file
             while (sc1.hasNext()) { 
                 splitLine = (sc1.next()).split(",");    // Split line at commas, splitLine is size 3
+                                
+                if (splitLine[2].length() < 4) {       // If the line does not have a birthYear, skip that person
+                    continue;
+                }
 
                 crewId = splitLine[0];
                 primaryName = splitLine[1];
                 birthYear = splitLine[2];
                 birthYear = birthYear.substring(0, birthYear.length()-1);
+                    
 
-                if (!(primaryName.matches("[a-zA-Z\s+_.-]+"))){
-                    System.out.println(primaryName);
+                // If the name is super weird, then we're going to skip it
+                if ( !(primaryName.matches("[a-zA-Z\s+_.-]+")) ){
+                    continue;
+                }else{
+                    // Populate database
+                    String sqlCommand = "INSERT INTO crewmembers VALUES('" + crewId + "', '" + primaryName + "', '" + birthYear + "');";
+                    Statement stmt = conn.createStatement();
+                    stmt.executeUpdate(sqlCommand);
                 }
-
-                // Populate database
-                // String sqlCommand = "INSERT INTO crewmembers VALUES('" + crewId + "', '" + primaryName + "', '" + birthYear + "');";
-                // Statement stmt = conn.createStatement();
-                // stmt.executeUpdate(sqlCommand);
             }
         } catch (Exception e) {
             System.out.println("Failed to populate CrewMembers table");
