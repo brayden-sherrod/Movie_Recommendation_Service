@@ -67,8 +67,6 @@ public class population_script {
 
     // TODO: Rose is going to write the population lines
     // *Need to iterate a primary key
-    // "CREATE TABLE CustomersRatings(customer_ratings_PK int PRIMARY KEY, media_ID
-    // text, customer_ID int, customer_rating int, date_rated date);"
     public static void scanCustomersRatings(Connection conn) throws FileNotFoundException {
 
         String fileName = "customers_ratings.csv";
@@ -107,8 +105,6 @@ public class population_script {
     }
 
     // *Need to iterate a primary key
-    // CREATE TABLE CustomersWatchedList(customer_watched_lists_PK int PRIMARY KEY,
-    // customerId int, titleId text);
     public static void scanCustomersWatchedLists(Connection conn) {
 
         String fileName = "customers_watched_lists.csv";
@@ -128,8 +124,6 @@ public class population_script {
     }
 
     // * DONT need to iterate a primary key
-    // CREATE TABLE MediaCollection(titleId int PRIMARY KEY, titleType text,
-    // runtimeMinutest int, averageRating float);
     public static void scanMediaCollection(Connection conn) {
 
         String fileName = "media_collection.csv";
@@ -149,8 +143,6 @@ public class population_script {
     }
 
     // *Need to iterate a primary key
-    // CREATE TABLE MediaCrewMembers(media_crew_members_PK int PRIMARY KEY, media_ID
-    // text, crew_ID text, job text);
     public static void scanMediaCrewMembers(Connection conn) {
 
         String fileName = "media_crew_members.csv";
@@ -170,8 +162,6 @@ public class population_script {
     }
 
     // *Need to iterate a primary key
-    // CREATE TABLE MediaGenres(media_genres_PK text PRIMARY KEY, titleId text,
-    // genres text);
     public static void scanMediaGenres(Connection conn) {
         
         String fileName = "media_genres.csv";
