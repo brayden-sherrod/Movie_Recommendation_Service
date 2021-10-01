@@ -287,7 +287,9 @@ public class population_script {
 
                 // If the genre list is surrounded by parentheis, remove the parenthesis around it
                 if ( genreList.charAt(0) ==  34) {
-                    genreList = genreList.substring(1, genreList.length()-1);   // "Comedy,Romance" should now be Comedy,Romance
+                    genreList = genreList.substring(1, genreList.length()-2);   // "Comedy,Romance" should now be Comedy,Romance
+                } else {
+                    genreList = genreList.substring(0, genreList.length()-1);   // Remove weird "\r" that shows at end of line
                 }
 
                 // Populate database with a new entry for every genre for a movie
