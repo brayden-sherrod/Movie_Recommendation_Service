@@ -18,7 +18,6 @@ public class jdbcpostgreSQL {
 	public static void main(String args[]) {
 
 		// Building the connection with your credentials
-		// TODO: update dbName, userName, and userPassword here
 		Connection conn = null;
 		String teamNumber = "11";
 		String sectionNumber = "903";
@@ -43,7 +42,6 @@ public class jdbcpostgreSQL {
 			Statement stmt = conn.createStatement();
 
 			// Running a query
-			// TODO: update the sql command here
 			String sqlStatement = "SELECT COUNT(*) FROM teammembers;";
 
 			// send statement to DBMS
