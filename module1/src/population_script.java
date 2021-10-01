@@ -19,12 +19,12 @@ public class population_script {
         
     }
 
-    //* 
+    // *Need to iterate a primary key
     public static void scanCustomersRatings(Connection conn) {
         try{
             System.out.println("Creating Table");
             Statement stmt = conn.createStatement();
-            String sqlString = "CREATE TABLE CustomersRatings(media_ID text, customer_ID int, customer_rating int, date_rated date);";
+            String sqlString = "CREATE TABLE CustomersRatings(customer_ratings_PK int PRIMARY KEY, media_ID text, customer_ID int, customer_rating int, date_rated date);";
             stmt.executeUpdate(sqlString);
 
         } catch (Exception e) {
@@ -35,6 +35,7 @@ public class population_script {
 		} 
     }
 
+    // *Need to iterate a primary key
     public static void scanCustomersWatchedLists(Connection conn) {
         try{
             System.out.println("Creating Table");
@@ -50,7 +51,7 @@ public class population_script {
 		} 
     }
 
-    //* Dont need to enumerate
+    //* DONT need to iterate a primary key
     public static void scanMediaCollection(Connection conn) {
         try{
             System.out.println("Creating Table");
@@ -66,7 +67,7 @@ public class population_script {
 		} 
     }
 
-    // 
+    // *Need to iterate a primary key
     public static void scanMediaCrewMembers(Connection conn) {
         try{
             System.out.println("Creating Table");
@@ -82,7 +83,7 @@ public class population_script {
 		} 
     }
 
-    // Need to iterate a primary key
+    // *Need to iterate a primary key
     public static void scanMediaGenres(Connection conn) {
         try{
             System.out.println("Creating Table");
