@@ -76,7 +76,7 @@ public class population_script {
     public static void scanCustomersRatings(Connection conn) throws FileNotFoundException {
         // Populate Database
         try{
-            System.out.println("Populating CrewMembers Table...");
+            System.out.println("Populating customers_ratings Table...");
             
             String fileName = "../../cleanedCSVFiles/crew_member.csv";
             
@@ -126,24 +126,6 @@ public class population_script {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
 		} 
-    }
-
-    // TODO: Rose is going to write the population lines
-    // *Need to iterate a primary key
-    public static void scanCustomersRatings(Connection conn) throws FileNotFoundException {
-        // Populate database
-        try {
-            System.out.println("Populating CustomerRatings Table...");
-            Statement stmt = conn.createStatement();
-            String sqlString = "";
-            stmt.executeUpdate(sqlString);
-
-        } catch (Exception e) {
-            System.out.println("Failed to populate CustomerRatings table");
-            e.printStackTrace();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
     }
 
     // *Need to iterate a primary key
