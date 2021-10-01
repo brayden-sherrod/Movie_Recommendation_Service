@@ -19,6 +19,7 @@ public class population_script {
         
     }
 
+    //* 
     public static void scanCustomersRatings(Connection conn) {
         try{
             System.out.println("Creating Table");
@@ -49,6 +50,7 @@ public class population_script {
 		} 
     }
 
+    //* Dont need to enumerate
     public static void scanMediaCollection(Connection conn) {
         try{
             System.out.println("Creating Table");
@@ -64,6 +66,7 @@ public class population_script {
 		} 
     }
 
+    // 
     public static void scanMediaCrewMembers(Connection conn) {
         try{
             System.out.println("Creating Table");
@@ -79,6 +82,7 @@ public class population_script {
 		} 
     }
 
+    // Need to iterate a primary key
     public static void scanMediaGenres(Connection conn) {
         try{
             System.out.println("Creating Table");
@@ -104,11 +108,16 @@ public class population_script {
      * @param pod - String of comma separated elements
      */
     public static void separatePod(String pod) {
-        String[] splitPod = pod.split(",");
+        String[] splitPod = pod.split(",", 2);
+        String media_ID = splitPod[1];
+        String [] splitGenres = splitPod[1].split(",");
 
+        long id = 1;
         // Iterate over array
-        for (String element : splitPod) {
+        for (String element : splitGenres) {
             System.out.print(element + "-");
+            populate(id, media_ID, element);
+            id++;
         }
     }
 
@@ -138,6 +147,9 @@ public class population_script {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
+
+        // TODO: enumerate files with duplicates in order to avoid duplicate primary key problem
+
         // Building the connection with your credentials
 		Connection conn = null;
 		String teamNumber = "11";
