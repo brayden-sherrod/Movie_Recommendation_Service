@@ -15,7 +15,7 @@ import java.sql.*;
 
 public class population_script {
 
-    
+
     /*----------------------------------------ONE FOR EACH CLEANED CSV---------------------------------------*/
     
     // * DONT need to iterate a primary key
@@ -78,7 +78,7 @@ public class population_script {
     public static void scanCustomersRatings(Connection conn) throws FileNotFoundException {
         // Populate Database
         try{
-            System.out.println("Populating customers_ratings Table...");
+            System.out.println("Populating CustomersRatings Table...");
             
             String fileName = "../../cleanedCSVFiles/crew_member.csv";
             
@@ -87,26 +87,20 @@ public class population_script {
 
             sc.next();             // Skips first line
             
-            String crewId;
-            String primaryName;
-            String birthYear;
+            int customer_ratings_pk;
+            String media_ID;
+            String customer_ID;
+            String customer_rating;
+            String date_rated;
             String[] splitLine;
 
             // Iterate through each line of file
             while (sc.hasNext()) { 
                 splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
-                
-                if (splitLine.length < 3) {             // If the array is less than 3 elements
-                    continue;
-                }
-                if (splitLine[2].length() < 4) {       // If the line does not have a birthYear, skip that person
-                    continue;
-                }
 
-                crewId = splitLine[0];
-                primaryName = splitLine[1];
-                birthYear = splitLine[2];
-                birthYear = birthYear.substring(0, birthYear.length()-1);
+                media_ID = splitLine[0];
+                customer_ID= splitLine[1];
+                customer_rating = splitLine[2];
                     
 
                 // If the name is super weird, then we're going to skip it
