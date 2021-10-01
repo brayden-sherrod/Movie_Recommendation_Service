@@ -117,7 +117,7 @@ public class population_script {
         // Iterate over array
         for (String element : splitGenres) {
             System.out.print(element + "-");
-            populate(id, media_ID, element);
+            // populate(id, media_ID, element); //TODO: still have to make populate function that is used here
             id++;
         }
     }
