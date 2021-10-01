@@ -343,9 +343,9 @@ public class population_script {
             //scanCrewMembers(conn);
             //scanCustomersRatings(conn);
             //scanCustomersWatchedLists(conn);
-            scanMediaCollection(conn);
-            // scanMediaCrewMembers(conn);
-            // scanMediaGenres(conn);
+            //scanMediaCollection(conn);
+            //scanMediaCrewMembers(conn);
+            scanMediaGenres(conn);
 
         // Closing the connection
         System.out.println("Closing the connection");
