@@ -114,7 +114,7 @@ public class population_script {
             // Close the scanner
             sc.close();
         } catch (Exception e) {
-            System.out.println("Failed to populate CrewMembers table");
+            System.out.println("Failed to populate CustoemrsRatings table");
 			e.printStackTrace();
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
@@ -157,7 +157,7 @@ public class population_script {
             // Close the scanner
             sc.close();
         } catch (Exception e) {
-            System.out.println("Failed to populate CrewMembers table");
+            System.out.println("Failed to populate customers watched list table");
 			e.printStackTrace();
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
