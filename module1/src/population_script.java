@@ -271,22 +271,34 @@ public class population_script {
             
             int media_genres_pk = 1;
             String media_ID;
-            String genre;
+            String genreList;
             String[] splitLine;
 
             // Iterate through each line of file
             while (sc.hasNext()) { 
-                splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
+                splitLine = (sc.next()).split(",", 2);    // Split line at commas, splitLine is size 2
 
-                media_ID = splitLine[0];
-                genre = splitLine[1];
-                    
-                // Populate database
-                String sqlCommand = "INSERT INTO mediagenres VALUES('" + media_genres_pk + "', '" +  media_ID + "', '" + genre + "');";
-                Statement stmt = conn.createStatement();
-                stmt.executeUpdate(sqlCommand);
+                // Example: starting with line-> tt402,"Comedy,Romance"
+                media_ID = splitLine[0];                  // Example: tt402
+                genreList = splitLine[1];                     // Example: "Comedy,Romance"
+
+                // If the genre list is surrounded by parentheis, remove the parenthesis around it
+                if ( genreList.charAt(0) ==  34) {
+                    genreList = genreList.substring(1, genreList.length()-1);   // "Comedy,Romance" should now be Comedy,Romance
+                }
+
+                // Populate database with a new entry for every genre for a movie
+                // To do this we will need to iterate through genres
+                String[] splitGenres = genreList.split(",");
+
+                for ( String genre : splitGenres ) {
+                    // Populate database with new entry for every genre for a movie
+                    String sqlCommand = "INSERT INTO mediagenres VALUES('" + media_genres_pk + "', '" +  media_ID + "', '" + genre + "');";
+                    Statement stmt = conn.createStatement();
+                    stmt.executeUpdate(sqlCommand);
+                    media_genres_pk++;
+                }
                 
-                media_genres_pk++;
             }
 
             // Close the scanner
