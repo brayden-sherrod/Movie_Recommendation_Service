@@ -18,16 +18,16 @@ public class population_script {
     
     // * DONT need to iterate a primary key
     public static void scanCrewMembers(Connection conn) {
+        // Populate Database
         try{
             System.out.println("Populating CrewMembers Table...");
             
-
             String fileName = "../../cleanedCSVFiles/crew_member.csv";
             
-            Scanner sc1 = new Scanner(new File(fileName));
-            sc1.useDelimiter("\n"); // Sets the delimiter pattern
+            Scanner sc = new Scanner(new File(fileName));
+            sc.useDelimiter("\n"); // Sets the delimiter pattern
 
-            sc1.next();             // Skips first line
+            sc.next();             // Skips first line
             
             String crewId;
             String primaryName;
@@ -35,8 +35,8 @@ public class population_script {
             String[] splitLine;
 
             // Iterate through each line of file
-            while (sc1.hasNext()) { 
-                splitLine = (sc1.next()).split(",");    // Split line at commas, splitLine is size 3
+            while (sc.hasNext()) { 
+                splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
                 
                 if (splitLine.length < 3) {             // If the array is less than 3 elements
                     continue;
@@ -61,6 +61,65 @@ public class population_script {
                     stmt.executeUpdate(sqlCommand);
                 }
             }
+
+            // Close the scanner
+            sc.close();
+        } catch (Exception e) {
+            System.out.println("Failed to populate CrewMembers table");
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		} 
+    }
+
+    // *Need to iterate a primary key
+    public static void scanCustomersRatings(Connection conn) throws FileNotFoundException {
+        // Populate Database
+        try{
+            System.out.println("Populating CrewMembers Table...");
+            
+            String fileName = "../../cleanedCSVFiles/crew_member.csv";
+            
+            Scanner sc = new Scanner(new File(fileName));
+            sc.useDelimiter("\n"); // Sets the delimiter pattern
+
+            sc.next();             // Skips first line
+            
+            String crewId;
+            String primaryName;
+            String birthYear;
+            String[] splitLine;
+
+            // Iterate through each line of file
+            while (sc.hasNext()) { 
+                splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
+                
+                if (splitLine.length < 3) {             // If the array is less than 3 elements
+                    continue;
+                }
+                if (splitLine[2].length() < 4) {       // If the line does not have a birthYear, skip that person
+                    continue;
+                }
+
+                crewId = splitLine[0];
+                primaryName = splitLine[1];
+                birthYear = splitLine[2];
+                birthYear = birthYear.substring(0, birthYear.length()-1);
+                    
+
+                // If the name is super weird, then we're going to skip it
+                if ( !(primaryName.matches("[a-zA-Z\s+_.-]+")) ){
+                    continue;
+                }else{
+                    // Populate database
+                    String sqlCommand = "INSERT INTO crewmembers VALUES('" + crewId + "', '" + primaryName + "', '" + birthYear + "');";
+                    Statement stmt = conn.createStatement();
+                    stmt.executeUpdate(sqlCommand);
+                }
+            }
+
+            // Close the scanner
+            sc.close();
         } catch (Exception e) {
             System.out.println("Failed to populate CrewMembers table");
 			e.printStackTrace();
@@ -72,27 +131,6 @@ public class population_script {
     // TODO: Rose is going to write the population lines
     // *Need to iterate a primary key
     public static void scanCustomersRatings(Connection conn) throws FileNotFoundException {
-
-        String fileName = "customers_ratings.csv";
-        
-        // Iterate through file's lines
-        // Scanner sc1 = new Scanner(new File(fileName));
-        // sc1.useDelimiter("\n"); // Sets the delimiter pattern
-
-        // System.out.println(sc1.next()); // Skips first line
-
-        // while (sc1.hasNext()) { // Returns a boolean value
-        //     String[] splitLine = (sc1.next()).split(","); // Splits each line into array
-
-        //     // Iterate over array
-        //     for (String pod : splitLine) {
-        //         separatePod(pod);
-        //         System.out.print("|");
-        //     }
-        //     System.out.println();
-        // }
-        // sc1.close(); // Closes the scanner
-
         // Populate database
         try {
             System.out.println("Populating CustomerRatings Table...");
