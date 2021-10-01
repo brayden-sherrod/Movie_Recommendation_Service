@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Scanner;
 import java.sql.*;
+// import java.util.regex.*;
 
 // Commands to run this script
 // This will compile all java files in this directory
@@ -25,26 +26,12 @@ public class population_script {
             Scanner sc1 = new Scanner(new File(fileName));
             sc1.useDelimiter("\n"); // Sets the delimiter pattern
 
-            sc1.next(); // Skips first line
+            sc1.next();             // Skips first line
             
             String crewId;
             String primaryName;
             String birthYear;
             String[] splitLine;
-
-            for (int i=0; i<20; i++) {
-                splitLine = (sc1.next()).split(",");    // Split line at commas, splitLine is size 3
-
-                crewId = splitLine[0];
-                primaryName = splitLine[1];
-                birthYear = splitLine[2];
-                    birthYear = birthYear.substring(0, birthYear.length()-1);
-
-                
-                
-                // INSERT INTO CrewMembers VALUES(crewID, primaryName, birthYear);
-                
-            }
 
             // Iterate through each line of file
             while (sc1.hasNext()) { 
@@ -53,27 +40,17 @@ public class population_script {
                 crewId = splitLine[0];
                 primaryName = splitLine[1];
                 birthYear = splitLine[2];
-                    birthYear = birthYear.substring(0, birthYear.length()-1);
+                birthYear = birthYear.substring(0, birthYear.length()-1);
+
+                if (!(primaryName.matches("[a-zA-Z\s+_.-]+"))){
+                    System.out.println(primaryName);
+                }
+
+                // Populate database
+                // String sqlCommand = "INSERT INTO crewmembers VALUES('" + crewId + "', '" + primaryName + "', '" + birthYear + "');";
+                // Statement stmt = conn.createStatement();
+                // stmt.executeUpdate(sqlCommand);
             }
-
-            Statement stmt = conn.createStatement();
-            String sqlString = "";
-            stmt.executeUpdate(sqlString);
-
-            /* String[] splitPod = pod.split(",", 2);
-            String media_ID = splitPod[1];
-            String[] splitGenres = splitPod[1].split(",");
-
-            long id = 1;
-            // Iterate over array
-            for (String element : splitGenres) {
-                System.out.print(element + "-");
-                // populate(id, media_ID, element); //TODO: still have to make populate function
-                // that is used here
-                id++;
-            } */
-
-
         } catch (Exception e) {
             System.out.println("Failed to populate CrewMembers table");
 			e.printStackTrace();
