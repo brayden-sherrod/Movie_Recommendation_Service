@@ -14,6 +14,8 @@ import java.sql.*;
 // MAKE SURE YOU ARE ON VPN or TAMU WIFI TO ACCESS DATABASE
 
 public class population_script {
+
+    
     /*----------------------------------------ONE FOR EACH CLEANED CSV---------------------------------------*/
     
     // * DONT need to iterate a primary key
@@ -211,9 +213,6 @@ public class population_script {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        // TODO: enumerate files with duplicates in order to avoid duplicate primary key
-        // problem
-
         // Building the connection with your credentials
         Connection conn = null;
         String teamNumber = "11";
@@ -232,20 +231,10 @@ public class population_script {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-
         System.out.println("Opened database successfully");
 
-        scanCrewMembers(conn);
-
         // Call functions to populate date
-            // * cleansing
-            // keep most recent media if there are duplicates
-            // redirect output to a file in folder clean_data
-            // scanFile("../../cleanedCSVFiles/crew_member.csv"); // ? starts at 6405819
-            // scanFile("../../data/customer_ratings.csv");
-            // scanFile("../../data/names.csv");
-            // scanFile("../../data/principals.csv");
-            // scanFile("../../data/titles.csv");
+        scanCrewMembers(conn);
 
         // Closing the connection
         System.out.println("Closing the connection");
@@ -256,4 +245,5 @@ public class population_script {
             System.out.println("Connection NOT Closed.");
         }
     }
+
 }
