@@ -213,7 +213,47 @@ public class population_script {
 
     // *Need to iterate a primary key
     public static void scanMediaCrewMembers(Connection conn) {
+        // Populate Database
+        try{
+            System.out.println("Populating MediaCrewMembers Table...");
+            
+            String fileName = "../../cleanedCSVFiles/media_crew_members.csv";
+            
+            Scanner sc = new Scanner(new File(fileName));
+            sc.useDelimiter("\n"); // Sets the delimiter pattern
 
+            sc.next();             // Skips first line
+            
+            int media_crew_members_pk = 1;
+            String media_ID;
+            String crew_ID;
+            String job;
+            String[] splitLine;
+
+            // Iterate through each line of file
+            while (sc.hasNext()) { 
+                splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
+
+                media_ID = splitLine[0];
+                crew_ID = splitLine[1];
+                job = splitLine[2];
+                    
+                // Populate database
+                String sqlCommand = "INSERT INTO mediacrewmembers VALUES('" + media_crew_members_pk + "', '" + media_ID + "', '" + crew_ID + "', '" + job + "');";
+                Statement stmt = conn.createStatement();
+                stmt.executeUpdate(sqlCommand);
+                
+                media_crew_members_pk++;
+            }
+
+            // Close the scanner
+            sc.close();
+        } catch (Exception e) {
+            System.out.println("Failed to populate MediaCrewMembers table");
+			e.printStackTrace();
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		} 
     }
 
     // *Need to iterate a primary key
