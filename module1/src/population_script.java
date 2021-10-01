@@ -17,29 +17,29 @@ public class population_script {
 
 
     /*----------------------------------------ONE FOR EACH CLEANED CSV---------------------------------------*/
-    
+
     // * DONT need to iterate a primary key
     public static void scanCrewMembers(Connection conn) {
         // Populate Database
         try{
             System.out.println("Populating CrewMembers Table...");
-            
+
             String fileName = "../../cleanedCSVFiles/crew_member.csv";
-            
+
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
-            
+
             String crewId;
             String primaryName;
             String birthYear;
             String[] splitLine;
 
             // Iterate through each line of file
-            while (sc.hasNext()) { 
+            while (sc.hasNext()) {
                 splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
-                
+
                 if (splitLine.length < 3) {             // If the array is less than 3 elements
                     continue;
                 }
@@ -49,10 +49,10 @@ public class population_script {
 
                 crewId = splitLine[0];
                 primaryName = splitLine[1];
-                birthYear = splitLine[2];                    
+                birthYear = splitLine[2];
 
                 // If the name is super weird, then we're going to skip it
-                if ( !(primaryName.matches("[a-zA-Z\s+_.-]+")) ){
+                if ( !(primaryName.matches("[a-zA-Z\\s+_.-]+")) ){
                     continue;
                 }else{
                     // Populate database
@@ -69,7 +69,7 @@ public class population_script {
 			e.printStackTrace();
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
-		} 
+		}
     }
 
     // *Need to iterate a primary key
@@ -77,14 +77,14 @@ public class population_script {
         // Populate Database
         try{
             System.out.println("Populating CustomersRatings Table...");
-            
+
             String fileName = "../../cleanedCSVFiles/customers_ratings.csv";
-            
+
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
-            
+
             int customer_ratings_pk = 1;
             String media_ID;
             String customer_ID;
@@ -93,19 +93,19 @@ public class population_script {
             String[] splitLine;
 
             // Iterate through each line of file
-            while (sc.hasNext()) { 
+            while (sc.hasNext()) {
                 splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
 
                 media_ID = splitLine[0];
                 customer_ID= splitLine[1];
                 customer_rating = splitLine[2];
                 date_rated = splitLine[3];
-                    
+
                 // Populate database
                 String sqlCommand = "INSERT INTO customersratings VALUES('" + customer_ratings_pk + "', '" + media_ID + "', '" + customer_ID + "', '" + customer_rating + "', '" + date_rated + "');";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sqlCommand);
-                
+
                 customer_ratings_pk++;
             }
 
@@ -116,7 +116,7 @@ public class population_script {
 			e.printStackTrace();
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
-		} 
+		}
     }
 
     // *Need to iterate a primary key
@@ -124,31 +124,31 @@ public class population_script {
         // Populate Database
         try{
             System.out.println("Populating CustomersWatchedList Table...");
-            
+
             String fileName = "../../cleanedCSVFiles/customers_watched_lists.csv";
-            
+
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
-            
+
             int customer_watched_lists_pk = 1;
             String customer_ID;
             String media_ID;
             String[] splitLine;
 
             // Iterate through each line of file
-            while (sc.hasNext()) { 
+            while (sc.hasNext()) {
                 splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
 
                 customer_ID= splitLine[0];
                 media_ID = splitLine[1];
-                    
+
                 // Populate database
                 String sqlCommand = "INSERT INTO customerswatchedlist VALUES('" + customer_watched_lists_pk + "', '" + customer_ID + "', '" + media_ID + "');";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sqlCommand);
-                
+
                 customer_watched_lists_pk++;
             }
 
@@ -159,7 +159,7 @@ public class population_script {
 			e.printStackTrace();
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
-		} 
+		}
     }
 
     // * DONT need to iterate a primary key
@@ -167,14 +167,14 @@ public class population_script {
         // Populate Database
         try{
             System.out.println("Populating MediaCollection Table...");
-            
+
             String fileName = "../../cleanedCSVFiles/media_collection.csv";
-            
+
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
-            
+
             String media_ID;
             String media_type;
             String media_title;
@@ -183,20 +183,20 @@ public class population_script {
             String[] splitLine;
 
             // Iterate through each line of file
-            while (sc.hasNext()) { 
+            while (sc.hasNext()) {
                 splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
-                
+
                 media_ID = splitLine[0];
                 media_type = splitLine[1];
                 media_title = splitLine[2];
                 runtime = splitLine[3];
                 average_rating = splitLine[4];
-                    
+
                 // Populate database
                 String sqlCommand = "INSERT INTO mediacollection VALUES('" + media_ID + "', '" + media_type + "', '" + media_title + "', '" + runtime + "', '" + average_rating + "');";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sqlCommand);
-                
+
             }
 
             // Close the scanner
@@ -206,7 +206,7 @@ public class population_script {
 			e.printStackTrace();
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
-		} 
+		}
     }
 
     // *Need to iterate a primary key
@@ -214,14 +214,14 @@ public class population_script {
         // Populate Database
         try{
             System.out.println("Populating MediaCrewMembers Table...");
-            
+
             String fileName = "../../cleanedCSVFiles/media_crew_members.csv";
-            
+
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
-            
+
             int media_crew_members_pk = 1;
             String media_ID;
             String crew_ID;
@@ -229,18 +229,18 @@ public class population_script {
             String[] splitLine;
 
             // Iterate through each line of file
-            while (sc.hasNext()) { 
+            while (sc.hasNext()) {
                 splitLine = (sc.next()).split(",");    // Split line at commas, splitLine is size 3
 
                 media_ID = splitLine[0];
                 crew_ID = splitLine[1];
                 job = splitLine[2];
-                    
+
                 // Populate database
                 String sqlCommand = "INSERT INTO mediacrewmembers VALUES('" + media_crew_members_pk + "', '" + media_ID + "', '" + crew_ID + "', '" + job + "');";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sqlCommand);
-                
+
                 media_crew_members_pk++;
             }
 
@@ -251,7 +251,7 @@ public class population_script {
 			e.printStackTrace();
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
-		} 
+		}
     }
 
     // *Need to iterate a primary key
@@ -259,21 +259,21 @@ public class population_script {
         // Populate Database
         try{
             System.out.println("Populating MediaGenres Table...");
-            
+
             String fileName = "../../cleanedCSVFiles/media_genres.csv";
-            
+
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
-            
+
             int media_genres_pk = 1;
             String media_ID;
             String genreList;
             String[] splitLine;
 
             // Iterate through each line of file
-            while (sc.hasNext()) { 
+            while (sc.hasNext()) {
                 splitLine = (sc.next()).split(",", 2);    // Split line at commas, splitLine is size 2
 
                 // Example: starting with line-> tt402,"Comedy,Romance"
@@ -296,7 +296,7 @@ public class population_script {
                     stmt.executeUpdate(sqlCommand);
                     media_genres_pk++;
                 }
-                
+
             }
 
             // Close the scanner
@@ -306,7 +306,7 @@ public class population_script {
 			e.printStackTrace();
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
-		} 
+		}
     }
 
     /*-----------------------------------------------------------------------------------------------------*/
@@ -322,7 +322,7 @@ public class population_script {
         String dbConnectionString = "jdbc:postgresql://csce-315-db.engr.tamu.edu/" + dbName;
         String userName = "csce315" + sectionNumber + "_" + teamNumber + "user";
         String userPassword = "new_password";
-        
+
         // Connecting to the database
         try {
             conn = DriverManager.getConnection(dbConnectionString, userName, userPassword);
