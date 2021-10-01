@@ -101,9 +101,10 @@ public class population_script {
                 media_ID = splitLine[0];
                 customer_ID= splitLine[1];
                 customer_rating = splitLine[2];
+                date_rated = splitLine[3];
                     
                 // Populate database
-                String sqlCommand = "INSERT INTO customersratings VALUES('" + customer_ratings_pk + "', '" + media_ID + "', '" + customer_ID + "');";
+                String sqlCommand = "INSERT INTO customersratings VALUES('" + customer_ratings_pk + "', '" + media_ID + "', '" + customer_ID + "', '" + customer_rating + "', '" + date_rated + "');";
                 Statement stmt = conn.createStatement();
                 stmt.executeUpdate(sqlCommand);
                 
