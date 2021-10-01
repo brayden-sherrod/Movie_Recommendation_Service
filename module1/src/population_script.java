@@ -36,7 +36,10 @@ public class population_script {
             // Iterate through each line of file
             while (sc1.hasNext()) { 
                 splitLine = (sc1.next()).split(",");    // Split line at commas, splitLine is size 3
-                                
+                
+                if (splitLine.length < 3) {             // If the array is less than 3 elements
+                    continue;
+                }
                 if (splitLine[2].length() < 4) {       // If the line does not have a birthYear, skip that person
                     continue;
                 }
