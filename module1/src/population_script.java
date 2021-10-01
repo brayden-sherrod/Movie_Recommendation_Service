@@ -15,10 +15,12 @@ import java.sql.*;
 public class population_script {
     /*----------------------------------------ONE FOR EACH CLEANED CSV---------------------------------------*/
 
+    //* TABLE CREATED
     public static void scanCrewMembers(Connection conn) {
         
     }
 
+    //TODO: CREATE TABLE - DONE
     // *Need to iterate a primary key
     public static void scanCustomersRatings(Connection conn) {
         try{
@@ -35,12 +37,13 @@ public class population_script {
 		} 
     }
 
+    //TODO: CREATE TABLE - DONE
     // *Need to iterate a primary key
     public static void scanCustomersWatchedLists(Connection conn) {
         try{
             System.out.println("Creating Table");
             Statement stmt = conn.createStatement();
-            String sqlString = "CREATE TABLE CustomersWatchedList(customerId int PRIMARY KEY, titleId text);";
+            String sqlString = "CREATE TABLE CustomersWatchedList(customer_watched_lists_PK int PRIMARY KEY, customerId int, titleId text);";
             stmt.executeUpdate(sqlString);
 
         } catch (Exception e) {
@@ -51,12 +54,13 @@ public class population_script {
 		} 
     }
 
+    //TODO: CREATE TABLE - DONE
     //* DONT need to iterate a primary key
     public static void scanMediaCollection(Connection conn) {
         try{
             System.out.println("Creating Table");
             Statement stmt = conn.createStatement();
-            String sqlString = "CREATE TABLE MediaCollection();";
+            String sqlString = "CREATE TABLE MediaCollection(titleId int PRIMARY KEY, titleType text, runtimeMinutest int, averageRating float);";
             stmt.executeUpdate(sqlString);
 
         } catch (Exception e) {
@@ -67,12 +71,13 @@ public class population_script {
 		} 
     }
 
+    //TODO: CREATE TABLE - DONE
     // *Need to iterate a primary key
     public static void scanMediaCrewMembers(Connection conn) {
         try{
             System.out.println("Creating Table");
             Statement stmt = conn.createStatement();
-            String sqlString = "CREATE TABLE MediaCrewMembers();";
+            String sqlString = "CREATE TABLE MediaCrewMembers(media_crew_members_PK int PRIMARY KEY, media_ID text, crew_ID text, job text);";
             stmt.executeUpdate(sqlString);
 
         } catch (Exception e) {
@@ -83,12 +88,13 @@ public class population_script {
 		} 
     }
 
+    //TODO: CREATE TABLE - DONE
     // *Need to iterate a primary key
     public static void scanMediaGenres(Connection conn) {
         try{
             System.out.println("Creating Table");
             Statement stmt = conn.createStatement();
-            String sqlString = "CREATE TABLE MediaGenres(titleId text PRIMARY KEY, genre);";
+            String sqlString = "CREATE TABLE MediaGenres(media_genres_PK text PRIMARY KEY, titleId text, genres text);";
             stmt.executeUpdate(sqlString);
 
         } catch (Exception e) {
