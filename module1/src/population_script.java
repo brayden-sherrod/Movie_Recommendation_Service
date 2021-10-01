@@ -49,9 +49,7 @@ public class population_script {
 
                 crewId = splitLine[0];
                 primaryName = splitLine[1];
-                birthYear = splitLine[2];
-                birthYear = birthYear.substring(0, birthYear.length()-1);
-                    
+                birthYear = splitLine[2];                    
 
                 // If the name is super weird, then we're going to skip it
                 if ( !(primaryName.matches("[a-zA-Z\s+_.-]+")) ){
