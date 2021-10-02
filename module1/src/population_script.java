@@ -342,12 +342,12 @@ public class population_script {
         System.out.println("Opened database successfully");
 
         // Call functions to populate date
-            //scanCrewMembers(conn);
+            scanCrewMembers(conn);
             //scanCustomersRatings(conn);
             //scanCustomersWatchedLists(conn);
             //scanMediaCollection(conn);
             //scanMediaCrewMembers(conn);
-            scanMediaGenres(conn);
+            //scanMediaGenres(conn);
 
         // Closing the connection
         System.out.println("Closing the connection");
