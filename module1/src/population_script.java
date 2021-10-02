@@ -25,12 +25,12 @@ public class population_script {
             System.out.println("Populating CrewMembers Table...");
 
             String fileName = "../../cleanedCSVFiles/crew_member.csv";
-
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
 
+            // Matches the columns of our database table
             String crewId;
             String primaryName;
             String birthYear;
@@ -79,12 +79,12 @@ public class population_script {
             System.out.println("Populating CustomersRatings Table...");
 
             String fileName = "../../cleanedCSVFiles/customers_ratings.csv";
-
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
 
+            // Matches the columns of our database table
             int customer_ratings_pk = 1;
             String media_ID;
             String customer_ID;
@@ -126,12 +126,12 @@ public class population_script {
             System.out.println("Populating CustomersWatchedList Table...");
 
             String fileName = "../../cleanedCSVFiles/customers_watched_lists.csv";
-
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
 
+            // Matches the columns of our database table
             int customer_watched_lists_pk = 1;
             String customer_ID;
             String media_ID;
@@ -168,8 +168,8 @@ public class population_script {
         try{
             System.out.println("Populating MediaCollection Table...");
 
+            // Matches the columns of our database table
             String fileName = "../../cleanedCSVFiles/media_collection.csv";
-
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
@@ -221,12 +221,12 @@ public class population_script {
             System.out.println("Populating MediaCrewMembers Table...");
 
             String fileName = "../../cleanedCSVFiles/media_crew_members.csv";
-
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
             sc.next();             // Skips first line
 
+            // Matches the columns of our database table
             int media_crew_members_pk = 1;
             String media_ID;
             String crew_ID;
@@ -266,12 +266,12 @@ public class population_script {
             System.out.println("Populating MediaGenres Table...");
 
             String fileName = "../../cleanedCSVFiles/media_genres.csv";
-
             Scanner sc = new Scanner(new File(fileName));
             sc.useDelimiter("\n"); // Sets the delimiter pattern
 
-            sc.next();             // Skips first line
-
+            sc.next();             // Skips first line in file
+            
+            // Matches the columns of our database table
             int media_genres_pk = 1;
             String media_ID;
             String genreList;
