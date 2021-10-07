@@ -1,9 +1,9 @@
 public class MainFile {
-    public static void main(String[] args)
-    {
-        Building the connection
+    public static void main(String[] args) {
+        // Building the connection
         Connection conn = null;
-        // TODO STEP 1
+        
+        // STEP 1: Connecting to the database
         try {
             Class.forName("org.postgresql.Driver");
             conn = DriverManager.getConnection("jdbc:postgresql://csce-315-db.engr.tamu.edu/csce315903_11db",
@@ -15,12 +15,12 @@ public class MainFile {
         }
         JOptionPane.showMessageDialog(null, "Opened database successfully");
 
+        // STEP 2: Get something from the database
         String name = "";
         try {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            // TODO Step 2
             String sqlStatement = "SELECT * FROM mediacollection LIMIT 10;";
             // send statement to DBMS
             ResultSet result = stmt.executeQuery(sqlStatement);
@@ -30,6 +30,8 @@ public class MainFile {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error accessing Database.");
         }
+
+        // STEP 3: Call our GUI
         new GUI2();
     }
 }
