@@ -15,41 +15,42 @@ import java.awt.GridLayout;
 
 public class homeGUI extends JFrame {
 
-    
-
     public homeGUI() {
 
         // Frame configurations
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // this will make the program shut down
-        setTitle("Eleven Tech Solutions");
+        setTitle("Home");
         setLayout(null);
         setSize(700,500);
 
         //Left side of screen
         JLabel recommendedForYou = new JLabel("Recommended For You");
-            recommendedForYou.setBounds(90, 0, 300, 100);
+            recommendedForYou.setBounds(100, 0, 300, 100);
+
         JTextArea tenRecommendations = new JTextArea("1. ...\n2. ...\n3. ...");
-            tenRecommendations.setEditable(false);
+            tenRecommendations.setEditable(false);  
         JScrollPane scrollpane1 = new JScrollPane(tenRecommendations);   //Note: Had to make the JTextArea a scrollpane in order to set its dimensions
             scrollpane1.setBounds(30, 70, 300, 300);
+
         JLabel searchLabel = new JLabel("Search for Titles");
             searchLabel.setBounds(40, 390, 300, 40);
+
         JTextField searchForTitles = new JTextField("");
             searchForTitles.setBounds(30, 420, 300, 40);
         
         //Right side of screen
         JLabel historyLabel = new JLabel("Your Watch History");
-            historyLabel.setBounds(480, 0, 200, 100);
+            historyLabel.setBounds(460, 0, 200, 100);
         JTextArea watchHistory = new JTextArea("...\n...");
             watchHistory.setEditable(false);
         JScrollPane scrollpane2 = new JScrollPane(watchHistory);
-            scrollpane2.setBounds(400, 70, 260, 350);
+            scrollpane2.setBounds(360, 70, 310, 300);
         JButton week = new JButton("This Week");
-            week.setBounds(380, 400, 90, 60);
+            week.setBounds(355, 400, 100, 50);
         JButton month = new JButton("This Month");
-            month.setBounds(490, 400, 90, 60);
+            month.setBounds(465, 400, 100, 50);
         JButton year = new JButton("This Year");
-            year.setBounds(600, 400, 90, 60);
+            year.setBounds(575, 400, 100, 50);
 
 
         add(recommendedForYou);
@@ -68,5 +69,4 @@ public class homeGUI extends JFrame {
         //pack();
         setVisible(true);
     }
-
 }

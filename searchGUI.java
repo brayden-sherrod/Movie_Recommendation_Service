@@ -59,7 +59,6 @@ public class searchGUI extends JFrame {
         //big list
         add(scroll_pane_title_list);
 
-
         // if button clicked then run the save function
         btn_enter.addActionListener(e -> enterForTitleFunc());
 
@@ -70,6 +69,8 @@ public class searchGUI extends JFrame {
     // public boolean validIDFound;
 
     public void enterForTitleFunc() {
+
+        foundTitles.clear();
 
         receivedTitle = txt_search.getText();
 
@@ -88,6 +89,11 @@ public class searchGUI extends JFrame {
             e.printStackTrace();
         }
 
+        if(foundTitles.isEmpty()){
+            JOptionPane.showMessageDialog(null, "No Titles Found");
+        }
+
+        foundTitlesList.setListData(foundTitles.toArray());
         foundTitlesList.repaint();
         scroll_pane_title_list.repaint();
 
