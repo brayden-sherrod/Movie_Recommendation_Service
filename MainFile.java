@@ -6,6 +6,7 @@ public class MainFile {
         welcomeGUI welGUI = new welcomeGUI();
 
         //! TEMPORARY
+        // homeGUI homeGUI = new homeGUI();
         searchGUI searchGUI = new searchGUI();
 
     }

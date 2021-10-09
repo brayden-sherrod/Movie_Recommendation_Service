@@ -15,8 +15,7 @@ import java.awt.GridLayout;
 
 public class homeGUI extends JFrame {
 
-    JPanel panelLeft;
-    JPanel panelRight;
+    
 
     public homeGUI() {
 
@@ -24,23 +23,23 @@ public class homeGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // this will make the program shut down
         setTitle("Eleven Tech Solutions");
         setSize(700,500);
+        setLayout(null);
         
-        // panelLeft configurations
-        panelLeft = new JPanel();
-        panelLeft.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-        panelLeft.setLayout(new GridLayout(1,1));
-        
-        // panelLeft Components
         JLabel recommendedForYou = new JLabel("Recommended For You");
+            recommendedForYou.setBounds(50, 0, 300, 100);
         JTextArea tenRecommendations = new JTextArea("1. ...\n2. ...\n3. ...");
-            tenRecommendations.setSize(100, 300);
+            tenRecommendations.setEditable(false);
+        JScrollPane scrollpane = new JScrollPane(tenRecommendations);
+            scrollpane.setBounds(30, 70, 300, 300);
         JTextField searchForTitles = new JTextField("Search for Titles");
-        panelLeft.add(recommendedForYou);
-        panelLeft.add(tenRecommendations);
-        panelLeft.add(searchForTitles);
+            searchForTitles.setBounds(30, 420, 300, 40);
+        
+        add(recommendedForYou);
+        add(scrollpane);
+        add(searchForTitles);
 
         // Add panels to frame, and make it visible
-        add(panelLeft, BorderLayout.WEST);
+        
         setLocationRelativeTo(null); // center the frame on the screen when it opens
         pack();
         setVisible(true);

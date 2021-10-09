@@ -15,14 +15,23 @@ import java.awt.GridLayout;
 
 public class searchGUI extends JFrame {
 
-        // First screen, prompt the user to enter their customerID
+    // First screen, prompt the user to enter their customerID
     // Declare GUI variables for first screen
-    
+
+    ArrayList<String> foundTitles = new ArrayList<String>();
+
+    // alphabetical
+    JList foundTitlesList = new JList(foundTitles.toArray());
+
     JButton btn_back_to_browse = new JButton("Back to Browse");
 
     JTextField txt_search = new JTextField();
-    
+
     JButton btn_enter = new JButton("Enter");
+
+    // scroller where list goes in
+    JScrollPane scroll_pane_title_list = new JScrollPane(foundTitlesList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
     public searchGUI() {
         super("Search");
@@ -33,13 +42,12 @@ public class searchGUI extends JFrame {
 
         // x, y, width, height ..?
         // First screen, prompt the user to enter their customerID
-        btn_back_to_browse.setBounds(5, 40, 175, 25);
-        txt_search.setBounds(230, 40, 400, 25);
-        btn_enter.setBounds(150, 250, 100, 25);
-
+        btn_back_to_browse.setBounds(5, 20, 175, 25);
+        txt_search.setBounds(190, 20, 400, 25);
+        btn_enter.setBounds(600, 20, 100, 25);
+        scroll_pane_title_list.setBounds(10, 50, 680, 400);
 
         // Adding to screen
-
         // button 1
         add(btn_back_to_browse);
 
@@ -49,28 +57,37 @@ public class searchGUI extends JFrame {
         // button 2
         add(btn_enter);
 
+        //big list
+        add(scroll_pane_title_list);
+
+
         // if button clicked then run the save function
         btn_enter.addActionListener(e -> enterForTitleFunc());
 
         setVisible(true);
     }
 
-    public String receivedID;
+    public String receivedTitle;
     // public boolean validIDFound;
-    
+
     public void enterForTitleFunc() {
 
-        receivedID = txt_search.getText();
+        receivedTitle = txt_search.getText();
 
-        //Valid ID:  1488844
-        System.out.println("I got the following customer id: " + receivedID);
+        // Valid ID: 1488844
+        System.out.println("I got the following media_title: " + receivedTitle);
 
         MainFile mainFile = new MainFile();
 
         // this function returns result of type ResultSet
-        ResultSet rs = mainFile.runSQLString("SELECT COUNT(*) FROM customerswatchedlist WHERE customer_Id = '" + receivedID + "';");
-
-
-        
+        ResultSet rs = mainFile
+                .runSQLString("SELECT * FROM mediacollection WHERE media_title CONTAINS '" + receivedTitle + "';");
+        try {
+            while (rs.next()) {
+                foundTitles.add(rs.getString("media_title") + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
