@@ -5,6 +5,9 @@ public class MainFile {
         // Build new GUI object
         welcomeGUI welGUI = new welcomeGUI();
 
+        //! TEMPORARY
+        searchGUI searchGUI = new searchGUI();
+
     }
 
     public ResultSet runSQLString(String inputSQLString) {
