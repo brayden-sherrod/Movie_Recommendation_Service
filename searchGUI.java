@@ -30,8 +30,7 @@ public class searchGUI extends JFrame {
     JButton btn_enter = new JButton("Enter");
 
     // scroller where list goes in
-    JScrollPane scroll_pane_title_list = new JScrollPane(foundTitlesList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane scroll_pane_title_list = new JScrollPane(foundTitlesList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
     public searchGUI() {
         super("Search");
@@ -80,14 +79,20 @@ public class searchGUI extends JFrame {
         MainFile mainFile = new MainFile();
 
         // this function returns result of type ResultSet
-        ResultSet rs = mainFile
-                .runSQLString("SELECT * FROM mediacollection WHERE media_title CONTAINS '" + receivedTitle + "';");
+        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection WHERE media_title LIKE '%" + receivedTitle + "%';");
         try {
             while (rs.next()) {
                 foundTitles.add(rs.getString("media_title") + "\n");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        foundTitlesList.repaint();
+        scroll_pane_title_list.repaint();
+
+        for(int i = 0; i < foundTitles.size(); i++){
+            System.out.println(foundTitles.get(i));
         }
     }
 }
