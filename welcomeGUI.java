@@ -72,11 +72,11 @@ public class welcomeGUI extends JFrame {
     }
 
     public String receivedID;
-    public boolean validIDFound;
+    // public boolean validIDFound;
     
-    public boolean saveID() {
+    public void saveID() {
 
-        validIDFound = false;
+        // validIDFound = false;
 
         receivedID = txt_customerID.getText();
 
@@ -106,12 +106,15 @@ public class welcomeGUI extends JFrame {
         }
 
         if(intCount > 0){
-            validIDFound = true;
+            // validIDFound = true;
+            homeGUI homeGUI = new homeGUI();
+            setVisible(false);
+            dispose();
         }else{
             lbl_instruction.setText("ERROR: Please enter an ID with at least 1 entry.");
         }
 
-        return validIDFound;
+        // return validIDFound;
         
     }
 
@@ -119,7 +122,4 @@ public class welcomeGUI extends JFrame {
         return receivedID;
     }
 
-    public boolean getValidIDFound(){
-        return validIDFound;
-    }
 }

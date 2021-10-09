@@ -5,17 +5,6 @@ public class MainFile {
         // Build new GUI object
         welcomeGUI welGUI = new welcomeGUI();
 
-        
-        System.out.println("validIDFound(): " + welGUI.getValidIDFound());
-
-        // make this execute after the button has been clicked and not before it
-        if(welGUI.getValidIDFound()){
-            // if we have found a valid ID then go to next page
-            // homeGUI homeGUI = new homeGUI();
-            homeGUI homeGUI = new homeGUI();
-            welGUI.setVisible(false);
-            welGUI.dispose();
-        }
     }
 
     public ResultSet runSQLString(String inputSQLString) {

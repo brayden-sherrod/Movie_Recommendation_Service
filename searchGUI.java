@@ -14,5 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 public class searchGUI extends JFrame {
-    
+    public searchGUI() {
+        
+    }
 }
