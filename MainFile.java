@@ -1,8 +1,27 @@
+import java.sql.*;
+
 public class MainFile {
     public static void main(String[] args) {
+        // Build new GUI object
+        welcomeGUI welGUI = new welcomeGUI();
+
+        
+        System.out.println("validIDFound(): " + welGUI.getValidIDFound());
+
+        // make this execute after the button has been clicked and not before it
+        if(welGUI.getValidIDFound()){
+            // if we have found a valid ID then go to next page
+            // homeGUI homeGUI = new homeGUI();
+            homeGUI homeGUI = new homeGUI();
+            welGUI.setVisible(false);
+            welGUI.dispose();
+        }
+    }
+
+    public ResultSet runSQLString(String inputSQLString) {
         // Building the connection
         Connection conn = null;
-        
+
         // STEP 1: Connecting to the database
         try {
             Class.forName("org.postgresql.Driver");
@@ -13,25 +32,33 @@ public class MainFile {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
-        JOptionPane.showMessageDialog(null, "Opened database successfully");
+
+        // JOptionPane.showMessageDialog(null, "");
+
+        System.out.println("Opened database successfully");
 
         // STEP 2: Get something from the database
         String name = "";
+
+        ResultSet result = null;
         try {
             // create a statement object
             Statement stmt = conn.createStatement();
             // create an SQL statement
-            String sqlStatement = "SELECT * FROM mediacollection LIMIT 10;";
+            String sqlStatement = inputSQLString;
             // send statement to DBMS
-            ResultSet result = stmt.executeQuery(sqlStatement);
-            while (result.next()) {
-                name += result.getString("media_title") + "\n";
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error accessing Database.");
-        }
+            result = stmt.executeQuery(sqlStatement);
 
-        // STEP 3: Call our GUI
-        new GUI2();
+            // System.out.println("result: " + result);
+
+            // while (result.next()) {
+            //     name += result.getString("media_title") + "\n";
+            // }
+        } catch (Exception e) {
+            System.out.println("Error accessing Database");
+        }
+        return result;
     }
+
+    
 }
