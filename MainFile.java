@@ -3,13 +3,13 @@ import java.sql.*;
 public class MainFile {
     public static void main(String[] args) {
         // Build new GUI object
-        welcomeGUI welGUI = new welcomeGUI();
+        new welcomeGUI();
         
         //! TEMPORARY
         // analyticsGUI anGUI = new analyticsGUI();
-        homeGUI homeGUI = new homeGUI("923517");
-        searchGUI searchGUI = new searchGUI();
-        watchGUI wG = new watchGUI("test title", "1488844");
+        // homeGUI homeGUI = new homeGUI("923517");
+        // searchGUI searchGUI = new searchGUI();
+        // watchGUI wG = new watchGUI("test title", "1488844");
     }
 
     public ResultSet runSQLString(String inputSQLString) {

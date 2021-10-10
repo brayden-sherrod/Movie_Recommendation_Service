@@ -19,6 +19,9 @@ public class welcomeGUI extends JFrame {
     JButton btn_save = new JButton("Enter");
     JButton btn_see_analytics = new JButton("See Analytics");
 
+    // Public variable to the class
+    public String receivedID; // public boolean validIDFound;
+
     public welcomeGUI() {
 
         // Frame configurations
@@ -49,11 +52,9 @@ public class welcomeGUI extends JFrame {
         add(btn_see_analytics);
         btn_see_analytics.addActionListener(e -> analytics());
         
+        setLocationRelativeTo(null); // center the window on the screen
         setVisible(true);
     }
-
-    public String receivedID;
-    // public boolean validIDFound;
     
     public void saveID() {
 
@@ -84,7 +85,7 @@ public class welcomeGUI extends JFrame {
 
         if(intCount > 0){
             // validIDFound = true;
-            homeGUI homeGUI = new homeGUI(receivedID);
+            new homeGUI(receivedID);
             setVisible(false);
             dispose();
         }else{
@@ -96,7 +97,7 @@ public class welcomeGUI extends JFrame {
     }
 
     public void analytics(){
-        analyticsGUI analyticsGUI = new analyticsGUI();
+        new analyticsGUI();
         setVisible(false);
         dispose();
     }

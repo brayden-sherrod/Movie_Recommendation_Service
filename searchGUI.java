@@ -18,7 +18,7 @@ public class searchGUI extends JFrame {
     JButton btn_enter = new JButton("Enter");
     JScrollPane scroll_pane_title_list = new JScrollPane(foundTitlesList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); // Scroller where list goes in
 
-    public searchGUI() {
+    public searchGUI(String receivedID) {
 
         super("Search");
         this.receivedID = receivedID;
@@ -46,6 +46,7 @@ public class searchGUI extends JFrame {
         btn_enter.addActionListener(e -> enterForTitleFunc());
         foundTitlesList.addMouseListener(mouseListener);
 
+        setLocationRelativeTo(null); // Center the window on the screen
         setVisible(true);
     }
 
@@ -93,19 +94,9 @@ public class searchGUI extends JFrame {
             if (e.getClickCount() == 1) {
 
                 String selectedItem = (String) foundTitlesList.getSelectedValue();
-                System.out.println("found Title: " + selectedItem);
+                // System.out.println("found Title: " + selectedItem);
 
-                watchGUI wG = new watchGUI(selectedItem, receivedID);
-
-                // // add selectedItem to your second list.
-                // DefaultListModel model = (DefaultListModel) foundTitlesList.getModel();
-
-                // if (model == null) {
-                //     model = new DefaultListModel();
-                //     foundTitlesList.setModel(model);
-                // }
-                // model.addElement(selectedItem);
-
+                new watchGUI(selectedItem, receivedID);
             }
         }
     };

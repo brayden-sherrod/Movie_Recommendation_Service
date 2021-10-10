@@ -76,9 +76,11 @@ public class homeGUI extends JFrame {
 
         JButton month = new JButton("This Month");
             month.setBounds(465, 400, 100, 50);
+            month.addActionListener(e -> populateMonthlyWatchHist());
 
         JButton year = new JButton("This Year");
             year.setBounds(575, 400, 100, 50);
+            year.addActionListener(e -> populateYearlyWatchHist());
 
         add(recommendedForYou);
         // add(scrollpane1);
@@ -89,7 +91,7 @@ public class homeGUI extends JFrame {
         add(month);
         add(year);
 
-        // Add panels to frame, and make it visible
+        jList_watch_hist.addMouseListener(mouseListener);
         
         setLocationRelativeTo(null); // center the frame on the screen when it opens
         //pack();
@@ -97,7 +99,7 @@ public class homeGUI extends JFrame {
     }
 
     public void openSearch(){
-        searchGUI search = new searchGUI();
+        new searchGUI(receivedID);
         setVisible(false);
         dispose();
     }
@@ -131,7 +133,7 @@ public class homeGUI extends JFrame {
 
         MainFile mainFile = new MainFile();
         // this function returns the result of trying to get a weeks worth of watch history
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '" + receivedID + "') AND (customersratings.date_rated BETWEEN '2005-12-24' AND '2005-12-31') ORDER BY date_rated DESC;");
+        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '" + receivedID + "') AND (customersratings.date_rated BETWEEN '2005-11-30' AND '2005-12-31') ORDER BY date_rated DESC;");
     
         try {
             while (rs.next()) {
@@ -149,4 +151,40 @@ public class homeGUI extends JFrame {
         jList_watch_hist.repaint();
         scroll_pane_watch_hist.repaint();
     }
+
+    public void populateYearlyWatchHist(){
+        arr_list_watch_hist.clear();
+
+        MainFile mainFile = new MainFile();
+        // this function returns the result of trying to get a weeks worth of watch history
+        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '" + receivedID + "') AND (customersratings.date_rated BETWEEN '2004-12-31' AND '2005-12-31') ORDER BY date_rated DESC;");
+    
+        try {
+            while (rs.next()) {
+                arr_list_watch_hist.add(rs.getString("media_title") + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (arr_list_watch_hist.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No Titles Found");
+        }
+
+        jList_watch_hist.setListData(arr_list_watch_hist.toArray());
+        jList_watch_hist.repaint();
+        scroll_pane_watch_hist.repaint();
+    }
+
+    MouseListener mouseListener = new MouseAdapter() {
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 1) {
+
+                String selectedItem = (String) jList_watch_hist.getSelectedValue();
+                System.out.println("found Title: " + selectedItem);
+
+                new watchGUI(selectedItem, receivedID);
+            }
+        }
+    };
 }
