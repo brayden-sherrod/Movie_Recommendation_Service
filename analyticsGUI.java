@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.*;   
 
-public class analyticsGUI extends JFrame implements ActionListener {
+public class analyticsGUI extends JFrame {
   
     JPanel panel = new JPanel();
 
