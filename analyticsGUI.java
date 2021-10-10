@@ -56,7 +56,7 @@ public class analyticsGUI extends JFrame {
         MainFile mainFile = new MainFile();
 
         // Connect to database
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection WHERE media_title LIKE '%" + receivedTitle + "%';");
+        ResultSet rs = mainFile.runSQLString("");
         try {
             while (rs.next()) {
                 
@@ -71,7 +71,7 @@ public class analyticsGUI extends JFrame {
         MainFile mainFile = new MainFile();
 
         // Connect to database
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection WHERE media_title LIKE '%" + receivedTitle + "%';");
+        ResultSet rs = mainFile.runSQLString("");
         try {
             while (rs.next()) {
                 
@@ -85,7 +85,7 @@ public class analyticsGUI extends JFrame {
         MainFile mainFile = new MainFile();
 
         // Connect to database
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection WHERE media_title LIKE '%" + receivedTitle + "%';");
+        ResultSet rs = mainFile.runSQLString("");
         try {
             while (rs.next()) {
                 
