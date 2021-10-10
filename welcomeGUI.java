@@ -17,6 +17,7 @@ public class welcomeGUI extends JFrame {
     JTextField txt_customerID = new JTextField();
     JLabel lbl_instruction = new JLabel("Enter your customer ID");
     JButton btn_save = new JButton("Enter");
+    JButton btn_see_analytics = new JButton("See Analytics");
 
     public welcomeGUI() {
 
@@ -28,35 +29,26 @@ public class welcomeGUI extends JFrame {
 
         // Place components
         lbl_instruction.setBounds(100, 10, 400, 25);    // Create a scroller, set its size, set scroller in constructor give it list
-        lbl_customerID.setBounds(100, 40, 175, 25);
-        txt_customerID.setBounds(190, 40, 160, 25);
-        btn_save.setBounds(150, 250, 100, 25);
-
-        // ------------------------------------------------------------------------------------------------
-        // running the operation once the button is pressed
-
-        // save button action
-        // btn_save.addActionListener(e -> save());
-
-        // btn_new.addActionListener(e -> clear());
-
-        // pplList.addListSelectionListener(e -> selected());
-
-        // btn_delete.addActionListener(e -> delete(e));
-
-        // btn_enter.addActionListener(e -> saveChanges());
-
-        // -------------------------------------------------------------------------------------------------
-
-        // Add components
         add(lbl_instruction);
+        
+        // label for customer id
+        lbl_customerID.setBounds(100, 40, 175, 25);
         add(lbl_customerID);
-        add(txt_customerID);
-        add(btn_save);
 
-        // If button clicked then run the save function
+        // text custome id
+        txt_customerID.setBounds(190, 40, 160, 25);
+        add(txt_customerID);
+
+        // save button
+        btn_save.setBounds(150, 250, 100, 25);
+        add(btn_save);
         btn_save.addActionListener(e -> saveID());
 
+        // see analytics
+        btn_see_analytics.setBounds(135, 300, 130, 25);
+        add(btn_see_analytics);
+        btn_see_analytics.addActionListener(e -> analytics());
+        
         setVisible(true);
     }
 
@@ -75,9 +67,6 @@ public class welcomeGUI extends JFrame {
 
         // this function returns result of type ResultSet
         ResultSet rs = mainFile.runSQLString("SELECT COUNT(*) FROM customerswatchedlist WHERE customer_Id = '" + receivedID + "';");
-
-        // System.out.println("result val: " + rs);
-        // System.out.println((Number) rs.getObject(1).intValue());
 
         int intCount = 0;
 
@@ -106,8 +95,13 @@ public class welcomeGUI extends JFrame {
         
     }
 
+    public void analytics(){
+        analyticsGUI analyticsGUI = new analyticsGUI();
+        setVisible(false);
+        dispose();
+    }
+
     public String getCustomerID(){
         return receivedID;
     }
-
 }

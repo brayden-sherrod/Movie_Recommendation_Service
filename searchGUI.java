@@ -1,13 +1,7 @@
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.sql.*;
 import java.awt.event.*;
-import java.awt.Dimension;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
 
 public class searchGUI extends JFrame {
 
@@ -32,6 +26,7 @@ public class searchGUI extends JFrame {
 
         // setBounds(x, y, width, height) of the components
         btn_back_to_browse.setBounds(5, 20, 175, 25);
+        btn_back_to_browse.addActionListener(e -> backHome());
         txt_search.setBounds(190, 20, 400, 25);
         btn_enter.setBounds(600, 20, 100, 25);
         scroll_pane_title_list.setBounds(10, 50, 680, 400);
@@ -44,6 +39,7 @@ public class searchGUI extends JFrame {
 
         // If button clicked then run the save function
         btn_enter.addActionListener(e -> enterForTitleFunc());
+        foundTitlesList.addMouseListener(mouseListener);
 
         setVisible(true);
     }
@@ -59,7 +55,8 @@ public class searchGUI extends JFrame {
         MainFile mainFile = new MainFile();
 
         // this function returns result of type ResultSet
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection WHERE media_title LIKE '%" + receivedTitle + "%';");
+        ResultSet rs = mainFile
+                .runSQLString("SELECT * FROM mediacollection WHERE media_title LIKE '%" + receivedTitle + "%';");
         try {
             while (rs.next()) {
                 foundTitles.add(rs.getString("media_title") + "\n");
@@ -68,7 +65,7 @@ public class searchGUI extends JFrame {
             e.printStackTrace();
         }
 
-        if(foundTitles.isEmpty()){
+        if (foundTitles.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No Titles Found");
         }
 
@@ -76,8 +73,37 @@ public class searchGUI extends JFrame {
         foundTitlesList.repaint();
         scroll_pane_title_list.repaint();
 
-        for(int i = 0; i < foundTitles.size(); i++){
+        for (int i = 0; i < foundTitles.size(); i++) {
             System.out.println(foundTitles.get(i));
         }
     }
+
+    public void backHome() {
+        homeGUI home = new homeGUI();
+        setVisible(false);
+        dispose();
+    }
+
+    MouseListener mouseListener = new MouseAdapter() {
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 1) {
+
+                String selectedItem = (String) foundTitlesList.getSelectedValue();
+                System.out.println("found Title: " + selectedItem);
+
+                watchGUI wG = new watchGUI(selectedItem);
+
+                // // add selectedItem to your second list.
+                // DefaultListModel model = (DefaultListModel) foundTitlesList.getModel();
+
+                // if (model == null) {
+                //     model = new DefaultListModel();
+                //     foundTitlesList.setModel(model);
+                // }
+                // model.addElement(selectedItem);
+
+            }
+        }
+    };
+
 }

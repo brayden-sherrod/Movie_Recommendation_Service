@@ -4,11 +4,12 @@ public class MainFile {
     public static void main(String[] args) {
         // Build new GUI object
         welcomeGUI welGUI = new welcomeGUI();
-
+        
         //! TEMPORARY
+        analyticsGUI anGUI = new analyticsGUI();
         homeGUI homeGUI = new homeGUI();
         searchGUI searchGUI = new searchGUI();
-
+        watchGUI wG = new watchGUI("test title");
     }
 
     public ResultSet runSQLString(String inputSQLString) {

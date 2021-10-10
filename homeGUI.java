@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import java.sql.*;
 import java.awt.event.*;
 import java.awt.Dimension;
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
@@ -29,34 +27,36 @@ public class homeGUI extends JFrame {
 
         JTextArea tenRecommendations = new JTextArea("1. ...\n2. ...\n3. ...");
             tenRecommendations.setEditable(false);  
+
         JScrollPane scrollpane1 = new JScrollPane(tenRecommendations);   //Note: Had to make the JTextArea a scrollpane in order to set its dimensions
             scrollpane1.setBounds(30, 70, 300, 300);
 
-        JLabel searchLabel = new JLabel("Search for Titles");
-            searchLabel.setBounds(40, 390, 300, 40);
-
-        JTextField searchForTitles = new JTextField("");
-            searchForTitles.setBounds(30, 420, 300, 40);
+        JButton searchButton = new JButton("Search For Titles");
+            searchButton.setBounds(30, 400, 300, 40);
+            searchButton.addActionListener(e -> openSearch());
         
         //Right side of screen
         JLabel historyLabel = new JLabel("Your Watch History");
             historyLabel.setBounds(460, 0, 200, 100);
+
         JTextArea watchHistory = new JTextArea("...\n...");
             watchHistory.setEditable(false);
+
         JScrollPane scrollpane2 = new JScrollPane(watchHistory);
             scrollpane2.setBounds(360, 70, 310, 300);
+
         JButton week = new JButton("This Week");
             week.setBounds(355, 400, 100, 50);
+
         JButton month = new JButton("This Month");
             month.setBounds(465, 400, 100, 50);
+
         JButton year = new JButton("This Year");
             year.setBounds(575, 400, 100, 50);
 
-
         add(recommendedForYou);
         add(scrollpane1);
-        add(searchLabel);
-        add(searchForTitles);
+        add(searchButton);
         add(historyLabel);
         add(scrollpane2);
         add(week);
@@ -68,5 +68,11 @@ public class homeGUI extends JFrame {
         setLocationRelativeTo(null); // center the frame on the screen when it opens
         //pack();
         setVisible(true);
+    }
+
+    public void openSearch(){
+        searchGUI search = new searchGUI();
+        setVisible(false);
+        dispose();
     }
 }
