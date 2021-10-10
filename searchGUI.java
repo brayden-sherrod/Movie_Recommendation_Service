@@ -5,6 +5,8 @@ import java.awt.event.*;
 
 public class searchGUI extends JFrame {
 
+    String receivedID;
+
     // Global variables
     public String receivedTitle;
     ArrayList<String> foundTitles = new ArrayList<String>();
@@ -18,8 +20,11 @@ public class searchGUI extends JFrame {
 
     public searchGUI() {
 
-        // Frame configurations
         super("Search");
+        this.receivedID = receivedID;
+
+        // Frame configurations
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(700, 500);
         setLayout(null);
@@ -55,8 +60,7 @@ public class searchGUI extends JFrame {
         MainFile mainFile = new MainFile();
 
         // this function returns result of type ResultSet
-        ResultSet rs = mainFile
-                .runSQLString("SELECT * FROM mediacollection WHERE media_title LIKE '%" + receivedTitle + "%';");
+        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection WHERE media_title LIKE '%" + receivedTitle + "%';");
         try {
             while (rs.next()) {
                 foundTitles.add(rs.getString("media_title") + "\n");
@@ -73,13 +77,13 @@ public class searchGUI extends JFrame {
         foundTitlesList.repaint();
         scroll_pane_title_list.repaint();
 
-        for (int i = 0; i < foundTitles.size(); i++) {
-            System.out.println(foundTitles.get(i));
-        }
+        // for (int i = 0; i < foundTitles.size(); i++) {
+        //     System.out.println(foundTitles.get(i));
+        // }
     }
 
     public void backHome() {
-        homeGUI home = new homeGUI();
+        homeGUI home = new homeGUI(receivedID);
         setVisible(false);
         dispose();
     }
@@ -91,7 +95,7 @@ public class searchGUI extends JFrame {
                 String selectedItem = (String) foundTitlesList.getSelectedValue();
                 System.out.println("found Title: " + selectedItem);
 
-                watchGUI wG = new watchGUI(selectedItem);
+                watchGUI wG = new watchGUI(selectedItem, receivedID);
 
                 // // add selectedItem to your second list.
                 // DefaultListModel model = (DefaultListModel) foundTitlesList.getModel();

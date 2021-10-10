@@ -19,13 +19,16 @@ import javax.imageio.ImageIO;
 
 public class watchGUI extends JFrame {
 
+    public String receivedID;
+
     public String foundTitle;
 
     public BufferedImage myPicture;
     public JLabel picLabel;
 
-    public watchGUI(String foundTitle){
+    public watchGUI(String foundTitle, String receivedID){
         this.foundTitle = foundTitle;
+        this.receivedID = receivedID;
 
 
         // picture loading
@@ -72,7 +75,7 @@ public class watchGUI extends JFrame {
     
 
     public void backHome() {
-        homeGUI home = new homeGUI();
+        homeGUI home = new homeGUI(receivedID);
         setVisible(false);
         dispose();
     }

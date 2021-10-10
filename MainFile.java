@@ -6,10 +6,10 @@ public class MainFile {
         welcomeGUI welGUI = new welcomeGUI();
         
         //! TEMPORARY
-        analyticsGUI anGUI = new analyticsGUI();
-        homeGUI homeGUI = new homeGUI();
+        // analyticsGUI anGUI = new analyticsGUI();
+        homeGUI homeGUI = new homeGUI("923517");
         searchGUI searchGUI = new searchGUI();
-        watchGUI wG = new watchGUI("test title");
+        watchGUI wG = new watchGUI("test title", "1488844");
     }
 
     public ResultSet runSQLString(String inputSQLString) {

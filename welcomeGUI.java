@@ -84,7 +84,7 @@ public class welcomeGUI extends JFrame {
 
         if(intCount > 0){
             // validIDFound = true;
-            homeGUI homeGUI = new homeGUI();
+            homeGUI homeGUI = new homeGUI(receivedID);
             setVisible(false);
             dispose();
         }else{

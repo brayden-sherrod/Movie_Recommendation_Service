@@ -13,7 +13,7 @@ public class analyticsGUI extends JFrame {
     JPanel panel = new JPanel();
     ArrayList<String> foundTitles = new ArrayList<String>();
     JList foundTitlesList = new JList(foundTitles.toArray());
-    JScrollPane scroll_pane_title_list = new JScrollPane(foundTitlesList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); // Scroller where list goes in
+    JScrollPane scroll_pane_title_list = new JScrollPane(foundTitlesList, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); // Scroller where list goes in
 
     JButton btn_back_to_welc = new JButton("Back to Welcome Page");
 
@@ -30,17 +30,15 @@ public class analyticsGUI extends JFrame {
 
         // Components
         JLabel titleText = new JLabel("Top 10 Most Watched Media");
-        JTextArea list = new JTextArea(
-                "1. ...\n2. ...\n3. ...\n4. ...\n5. ...\n6. ...\n7. ...\n8. ...\n9. ...\n10. ...");
-        list.setEditable(false);
-
-        // back to welcome page button
+        
+        // Back to welcome page button
         btn_back_to_welc.setBounds(10, 10, 200, 25);
         add(btn_back_to_welc);
         btn_back_to_welc.addActionListener(e -> backWelcFunc());
 
-        JButton weekly = new JButton("weekly");
-        weekly.addActionListener(e -> viewWeekly());
+        // Other buttons
+        JButton alltime = new JButton("all time");
+        alltime.addActionListener(e -> viewAlltime());
         JButton monthly = new JButton("monthly");
         monthly.addActionListener(e -> viewMonthly());
         JButton yearly = new JButton("yearly");
@@ -48,15 +46,15 @@ public class analyticsGUI extends JFrame {
 
         // Configure component placements
         titleText.setBounds(270, 20, 200, 30);
-        list.setBounds(100, 60, 500, 300);
-        weekly.setBounds(100, 380, 120, 40);
+        scroll_pane_title_list.setBounds(100, 60, 500, 300);
+        alltime.setBounds(100, 380, 120, 40);
         monthly.setBounds(290, 380, 120, 40);
         yearly.setBounds(480, 380, 120, 40);
 
         // Add components to frame
         panel.add(titleText);
-        panel.add(list);
-        panel.add(weekly);
+        panel.add(scroll_pane_title_list);
+        panel.add(alltime);
         panel.add(monthly);
         panel.add(yearly);
 
@@ -72,19 +70,32 @@ public class analyticsGUI extends JFrame {
         dispose();
     }
 
-    public void viewWeekly() {
+    public void viewAlltime() {
 
         foundTitles.clear();
         MainFile mainFile = new MainFile();
 
         // Connect to database
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM customerswatchedlist LIMIT 10;");
+        ResultSet rs = mainFile.runSQLString("SELECT A.media_title FROM mediacollection A WHERE A.media_id in (SELECT media_id FROM (SELECT media_id,COUNT(media_id) AS value_occurrence FROM customersratings GROUP BY media_id ORDER BY value_occurrence DESC LIMIT 10) AS foo);");
         try {
             while (rs.next()) {
-                
+                foundTitles.add(rs.getString("media_title") + "\n");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        // Print if no titles returned
+        if (foundTitles.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No titles watched ever.");
+        }
+
+        // Display the titles
+        foundTitlesList.setListData(foundTitles.toArray());
+        foundTitlesList.repaint();
+        scroll_pane_title_list.repaint();
+        for (int i = 0; i < foundTitles.size(); i++) {
+            System.out.println(foundTitles.get(i));
         }
 
     }
@@ -95,13 +106,26 @@ public class analyticsGUI extends JFrame {
         MainFile mainFile = new MainFile();
 
         // Connect to database
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM customerswatchedlist LIMIT 10;");
+        ResultSet rs = mainFile.runSQLString("SELECT A.media_title FROM mediacollection A WHERE A.media_id in (SELECT media_id FROM (SELECT media_id,COUNT(media_id) AS value_occurrence FROM customersratings WHERE (date_rated BETWEEN '2005-11-30' AND '2005-12-21') GROUP BY media_id ORDER BY value_occurrence DESC LIMIT 10) AS foo);");
         try {
             while (rs.next()) {
-                
+                foundTitles.add(rs.getString("media_title") + "\n");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        // Print if no titles returned
+        if (foundTitles.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No titles watched in the past month.");
+        }
+
+        // Display the titles
+        foundTitlesList.setListData(foundTitles.toArray());
+        foundTitlesList.repaint();
+        scroll_pane_title_list.repaint();
+        for (int i = 0; i < foundTitles.size(); i++) {
+            System.out.println(foundTitles.get(i));
         }
     }
 
@@ -111,13 +135,26 @@ public class analyticsGUI extends JFrame {
         MainFile mainFile = new MainFile();
 
         // Connect to database
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM customerswatchedlist LIMIT 10;");
+        ResultSet rs = mainFile.runSQLString("SELECT A.media_title FROM mediacollection A WHERE A.media_id in (SELECT media_id FROM (SELECT media_id,COUNT(media_id) AS value_occurrence FROM customersratings WHERE (date_rated BETWEEN '2004-12-31' AND '2005-12-21') GROUP BY media_id ORDER BY value_occurrence DESC LIMIT 10) AS foo);");
         try {
             while (rs.next()) {
-
+                foundTitles.add(rs.getString("media_title") + "\n");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        // Print if no titles returned
+        if (foundTitles.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No titles watched in the past year.");
+        }
+
+        // Display the titles
+        foundTitlesList.setListData(foundTitles.toArray());
+        foundTitlesList.repaint();
+        scroll_pane_title_list.repaint();
+        for (int i = 0; i < foundTitles.size(); i++) {
+            System.out.println(foundTitles.get(i));
         }
     }
 }
