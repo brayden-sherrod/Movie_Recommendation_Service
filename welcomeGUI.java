@@ -1,36 +1,33 @@
 
 import javax.swing.*;
-
-//import javax.swing.JComboBox;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
 import java.sql.*;
 import java.awt.event.*;
 import java.awt.Dimension;
 
+// First screen, prompt the user to enter their customerID
+
 public class welcomeGUI extends JFrame {
 
-    // First screen, prompt the user to enter their customerID
-    // Declare GUI variables for first screen
+    // Components
     JLabel lbl_customerID = new JLabel("Customer ID: ");
     JTextField txt_customerID = new JTextField();
     JLabel lbl_instruction = new JLabel("Enter your customer ID");
     JButton btn_save = new JButton("Enter");
 
     public welcomeGUI() {
+
+        // Frame configurations
         super("Eleven Tech Solutions");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(420, 400);
-
         setLayout(null);
 
-        // Create a scroller, set its size, set scroller in constructor give it list
-        lbl_instruction.setBounds(100, 10, 400, 25);
-
-        // First screen, prompt the user to enter their customerID
+        // Place components
+        lbl_instruction.setBounds(100, 10, 400, 25);    // Create a scroller, set its size, set scroller in constructor give it list
         lbl_customerID.setBounds(100, 40, 175, 25);
         txt_customerID.setBounds(190, 40, 160, 25);
         btn_save.setBounds(150, 250, 100, 25);
@@ -50,22 +47,16 @@ public class welcomeGUI extends JFrame {
         // btn_enter.addActionListener(e -> saveChanges());
 
         // -------------------------------------------------------------------------------------------------
-        // adding to screen
 
-        // instructions
+        // Add components
         add(lbl_instruction);
-
-        // Customer_ID
         add(lbl_customerID);
         add(txt_customerID);
-
-        // buttons
         add(btn_save);
 
-        // if button clicked then run the save function
+        // If button clicked then run the save function
         btn_save.addActionListener(e -> saveID());
 
-        // --------------------------------------------------------------------------------------------------
         setVisible(true);
     }
 
@@ -75,7 +66,6 @@ public class welcomeGUI extends JFrame {
     public void saveID() {
 
         // validIDFound = false;
-
         receivedID = txt_customerID.getText();
 
         //Valid ID:  1488844
