@@ -1,11 +1,12 @@
 import java.sql.*;
 
 public class MainFile {
-    public static void main(String[] args) {
-        // Build new GUI object
-        new welcomeGUI();
         
-        //! TEMPORARY
+    public static void main(String[] args) {
+        // STEP 2: Build new GUI object
+        new welcomeGUI(); // 923517
+        
+        //! TEMPORARY for testing
         // analyticsGUI anGUI = new analyticsGUI();
         // homeGUI homeGUI = new homeGUI("923517");
         // searchGUI searchGUI = new searchGUI();
@@ -13,7 +14,7 @@ public class MainFile {
     }
 
     public ResultSet runSQLString(String inputSQLString) {
-        // Building the connection
+
         Connection conn = null;
 
         // STEP 1: Connecting to the database
@@ -43,16 +44,18 @@ public class MainFile {
             // send statement to DBMS
             result = stmt.executeQuery(sqlStatement);
 
-            // System.out.println("result: " + result);
-
-            // while (result.next()) {
-            //     name += result.getString("media_title") + "\n";
-            // }
         } catch (Exception e) {
             System.out.println("Error accessing Database");
         }
+
+        //STEP 3: Closing the connection
+        try {
+            conn.close();
+            System.out.println("Connection Closed.");
+        } catch(Exception e) {
+            System.out.println("Connection NOT Closed.");
+        }
+        
         return result;
     }
-
-    
 }
