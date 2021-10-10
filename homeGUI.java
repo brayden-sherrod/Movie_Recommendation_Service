@@ -13,6 +13,11 @@ import java.awt.GridLayout;
 
 public class homeGUI extends JFrame {
 
+    ////Scroll pane setup for watch history
+    /* ArrayList<String> arr_list_watch_hist = new ArrayList<String>();
+    JList jList_watch_hist = new JList(arr_list_watch_hist.toArray());
+    JScrollPane scroll_pane_watch_hist = new JScrollPane(jList_watch_hist, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); // Scroller where list goes in
+ */
     public homeGUI() {
 
         // Frame configurations
@@ -41,6 +46,7 @@ public class homeGUI extends JFrame {
 
         JTextArea watchHistory = new JTextArea("...\n...");
             watchHistory.setEditable(false);
+
 
         JScrollPane scrollpane2 = new JScrollPane(watchHistory);
             scrollpane2.setBounds(360, 70, 310, 300);
