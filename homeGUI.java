@@ -113,17 +113,20 @@ public class homeGUI extends JFrame {
 
 
 
-                // label for customer id
-                lbl_start.setBounds(0, 0, 175, 25);
-                txt_start.setBounds(80, 0, 175, 25);
-                add(lbl_start);
-                add(txt_start);
-        
-                // text custome id
-                lbl_end.setBounds(300, 0, 175, 25);
-                txt_end.setBounds(400, 0, 175, 25);
-                add(lbl_end);
-                add(txt_end);
+        // label for start date
+        lbl_start.setBounds(10, 0, 175, 25);
+        add(lbl_start);
+        // text of start date
+        txt_start.setBounds(80, 0, 175, 25);
+        add(txt_start);
+
+        // label of end date
+        lbl_end.setBounds(340, 0, 175, 25);
+        add(lbl_end);
+
+        // text for end date
+        txt_end.setBounds(400, 0, 175, 25);
+        add(txt_end);
 
 
 
