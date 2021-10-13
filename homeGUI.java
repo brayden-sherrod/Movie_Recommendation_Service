@@ -29,12 +29,10 @@ public class homeGUI extends JFrame {
     JList jList_watch_hist = new JList(arr_list_watch_hist.toArray());
     JScrollPane scroll_pane_watch_hist = new JScrollPane(jList_watch_hist, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); // Scroller where list goes in
 
+    // Variables that will be used in multiple functions of the class
     public String receivedID;
-
     public String startDate;
     public String endDate;
-
-
 
     public homeGUI(String receivedID) {
 
@@ -46,95 +44,42 @@ public class homeGUI extends JFrame {
         setLayout(null);
         setSize(700,500);
 
-        //* Left side of screen
+        // Left side of screen
         JLabel recommendedForYou = new JLabel("Recommended For You");
             recommendedForYou.setBounds(100, 0, 300, 100);
-
-        // JTextArea tenRecommendations = new JTextArea("1. ...\n2. ...\n3. ...");
-        //     tenRecommendations.setEditable(false);  
-
-        // JScrollPane scrollpane1 = new JScrollPane(tenRecommendations);   //Note: Had to make the JTextArea a scrollpane in order to set its dimensions
-        //     scrollpane1.setBounds(30, 70, 300, 300);
-
         scroll_pane_rec.setBounds(30, 70, 300, 300);
-        add(scroll_pane_rec);
-
-
         JButton searchButton = new JButton("Search For Titles");
             searchButton.setBounds(30, 400, 300, 40);
             searchButton.addActionListener(e -> openSearch());
         
-        //* Right side of screen
+        // Right side of screen
         JLabel historyLabel = new JLabel("Your Watch History");
             historyLabel.setBounds(460, 0, 200, 100);
-
-        // JTextArea watchHistory = new JTextArea("...\n...");
-        //     watchHistory.setEditable(false);
-
-
-        // JScrollPane scrollpane2 = new JScrollPane(watchHistory);
-        //     scrollpane2.setBounds(360, 70, 310, 300);
-
-
         scroll_pane_watch_hist.setBounds(360, 70, 310, 300);
-        add(scroll_pane_watch_hist);
-
-
-        
-
-
-
-        // JButton week = new JButton("This Week");
-        //     week.setBounds(355, 400, 100, 50);
-        //     week.addActionListener(e -> populateWeeklyWatchHist());
-
-        // JButton month = new JButton("This Month");
-        //     month.setBounds(465, 400, 100, 50);
-        //     month.addActionListener(e -> populateMonthlyWatchHist());
-
-        // JButton year = new JButton("This Year");
-        //     year.setBounds(575, 400, 100, 50);
-        //     year.addActionListener(e -> populateYearlyWatchHist());
-
         JButton search = new JButton ("Search");
             search.setBounds(575, 400, 100, 50);
             search.addActionListener(e -> populateWatchHist());
+        lbl_start.setBounds(10, 0, 175, 25);
+        txt_start.setBounds(80, 0, 175, 25);
+        lbl_end.setBounds(340, 0, 175, 25);
+        txt_end.setBounds(400, 0, 175, 25);
 
-
+        // Add components to frame
+        add(scroll_pane_rec);
+        add(scroll_pane_watch_hist);
         add(recommendedForYou);
-        // add(scrollpane1);
         add(searchButton);
         add(historyLabel);
-        // add(scrollpane2);
-        // add(week);
-        // add(month);
-        // add(year);
+        add(lbl_start);
+        add(txt_start);
+        add(lbl_end);
+        add(txt_end);
         add(search);
 
-
-
-        // label for start date
-        lbl_start.setBounds(10, 0, 175, 25);
-        add(lbl_start);
-        // text of start date
-        txt_start.setBounds(80, 0, 175, 25);
-        add(txt_start);
-
-        // label of end date
-        lbl_end.setBounds(340, 0, 175, 25);
-        add(lbl_end);
-
-        // text for end date
-        txt_end.setBounds(400, 0, 175, 25);
-        add(txt_end);
-
-
-
-
         jList_watch_hist.addMouseListener(mouseListener);
-        
-        setLocationRelativeTo(null); // center the frame on the screen when it opens
-        //pack();
+
+        // Center the frame window on middle of screen and then allow it to be visible
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -144,78 +89,7 @@ public class homeGUI extends JFrame {
         dispose();
     }
 
-    public void populateWeeklyWatchHist(){
-        arr_list_watch_hist.clear();
-
-        MainFile mainFile = new MainFile();
-        // this function returns the result of trying to get a weeks worth of watch history
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '" + receivedID + "') AND (customersratings.date_rated BETWEEN '2005-12-24' AND '2005-12-31') ORDER BY date_rated DESC;");
-    
-        try {
-            while (rs.next()) {
-                arr_list_watch_hist.add(rs.getString("media_title") + "\n");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (arr_list_watch_hist.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No Titles Found");
-        }
-
-        jList_watch_hist.setListData(arr_list_watch_hist.toArray());
-        jList_watch_hist.repaint();
-        scroll_pane_watch_hist.repaint();
-    }
-
-    public void populateMonthlyWatchHist(){
-        arr_list_watch_hist.clear();
-
-        MainFile mainFile = new MainFile();
-        // this function returns the result of trying to get a weeks worth of watch history
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '" + receivedID + "') AND (customersratings.date_rated BETWEEN '2005-11-30' AND '2005-12-31') ORDER BY date_rated DESC;");
-    
-        try {
-            while (rs.next()) {
-                arr_list_watch_hist.add(rs.getString("media_title") + "\n");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (arr_list_watch_hist.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No Titles Found");
-        }
-
-        jList_watch_hist.setListData(arr_list_watch_hist.toArray());
-        jList_watch_hist.repaint();
-        scroll_pane_watch_hist.repaint();
-    }
-
-    public void populateYearlyWatchHist(){
-        arr_list_watch_hist.clear();
-
-        MainFile mainFile = new MainFile();
-        // this function returns the result of trying to get a weeks worth of watch history
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '" + receivedID + "') AND (customersratings.date_rated BETWEEN '2004-12-31' AND '2005-12-31') ORDER BY date_rated DESC;");
-    
-        try {
-            while (rs.next()) {
-                arr_list_watch_hist.add(rs.getString("media_title") + "\n");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        if (arr_list_watch_hist.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No Titles Found");
-        }
-
-        jList_watch_hist.setListData(arr_list_watch_hist.toArray());
-        jList_watch_hist.repaint();
-        scroll_pane_watch_hist.repaint();
-    }
-
+    // Depends on startDate and endDate specified by customer
     public void populateWatchHist(){
 
         startDate = txt_start.getText();
@@ -224,9 +98,7 @@ public class homeGUI extends JFrame {
         arr_list_watch_hist.clear();
 
         MainFile mainFile = new MainFile();
-        // this function returns the result of trying to get a weeks worth of watch history
         ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '" + receivedID + "') AND (customersratings.date_rated BETWEEN '" + startDate + "' AND '" + endDate + "') ORDER BY date_rated DESC;");
-    
         try {
             while (rs.next()) {
                 arr_list_watch_hist.add(rs.getString("media_title") + "\n");
@@ -244,6 +116,7 @@ public class homeGUI extends JFrame {
         scroll_pane_watch_hist.repaint();
     }
 
+    // Makes titles of media clickable (to open up the watch screen)
     MouseListener mouseListener = new MouseAdapter() {
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 1) {
