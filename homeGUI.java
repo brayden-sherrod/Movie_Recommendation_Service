@@ -49,7 +49,7 @@ public class homeGUI extends JFrame {
             recommendedForYou.setBounds(100, 0, 300, 100);
         scroll_pane_rec.setBounds(30, 70, 300, 300);
         JButton searchButton = new JButton("Search For Titles");
-            searchButton.setBounds(30, 400, 300, 40);
+            searchButton.setBounds(30, 400, 150, 40);
             searchButton.addActionListener(e -> openSearch());
         
         // Right side of screen
@@ -59,10 +59,14 @@ public class homeGUI extends JFrame {
         JButton search = new JButton ("Search");
             search.setBounds(575, 400, 100, 50);
             search.addActionListener(e -> populateWatchHist());
-        lbl_start.setBounds(10, 0, 175, 25);
-        txt_start.setBounds(80, 0, 175, 25);
-        lbl_end.setBounds(340, 0, 175, 25);
-        txt_end.setBounds(400, 0, 175, 25);
+
+        //START AND END DATES
+        // x, y, width, height
+        lbl_start.setBounds(220, 405, 175, 25);
+        txt_start.setBounds(300, 405, 75, 25);
+
+        lbl_end.setBounds(400, 405, 175, 25);
+        txt_end.setBounds(470, 405, 75, 25);
 
         // Add components to frame
         add(scroll_pane_rec);
@@ -81,6 +85,8 @@ public class homeGUI extends JFrame {
         // Center the frame window on middle of screen and then allow it to be visible
         setLocationRelativeTo(null);
         setVisible(true);
+
+        txt_start.repaint();
     }
 
     public void openSearch(){

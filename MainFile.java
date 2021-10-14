@@ -32,7 +32,9 @@ public class MainFile {
 
         // STEP 1: Connecting to the database
         try {
-            Class.forName("org.postgresql.Driver");
+            System.out.println("point 1");
+            Class.forName("org.postgresql.Driver"); //!
+            System.out.println("point 2");
             conn = DriverManager.getConnection("jdbc:postgresql://csce-315-db.engr.tamu.edu/csce315903_11db",
                     "csce315903_11user", "new_password");
         } catch (Exception e) {
