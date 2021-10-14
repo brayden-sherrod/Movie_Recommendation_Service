@@ -21,7 +21,7 @@ public class MainFile {
         
         //! TEMPORARY for testing
         // analyticsGUI anGUI = new analyticsGUI();
-        homeGUI homeGUI = new homeGUI("923517");
+        // homeGUI homeGUI = new homeGUI("923517");
         // searchGUI searchGUI = new searchGUI();
         // watchGUI wG = new watchGUI("test title", "1488844");
     }
@@ -32,7 +32,9 @@ public class MainFile {
 
         // STEP 1: Connecting to the database
         try {
-            Class.forName("org.postgresql.Driver");
+            System.out.println("point 1");
+            Class.forName("org.postgresql.Driver"); //!
+            System.out.println("point 2");
             conn = DriverManager.getConnection("jdbc:postgresql://csce-315-db.engr.tamu.edu/csce315903_11db",
                     "csce315903_11user", "new_password");
         } catch (Exception e) {
