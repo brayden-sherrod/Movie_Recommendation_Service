@@ -217,12 +217,6 @@ public class homeGUI extends JFrame {
 
 
 
-
-
-
-
-
-
         if (arr_list_watch_hist.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No Titles Found");
         }
