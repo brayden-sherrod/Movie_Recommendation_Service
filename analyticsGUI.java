@@ -21,6 +21,8 @@ public class analyticsGUI extends JFrame {
     JTextField endField = new JTextField();
     JTextField title1 = new JTextField();
     JTextField title2 = new JTextField();
+    JLabel titleText = new JLabel("Top 10 Most Watched Media");
+    
 
     public analyticsGUI() {
         // Frame configurations
@@ -34,7 +36,7 @@ public class analyticsGUI extends JFrame {
         panel.setLayout(null);
 
         // Components
-        JLabel titleText = new JLabel("Top 10 Most Watched Media");
+        
         JButton enterButton = new JButton("Enter");
         JLabel top10Label = new JLabel("Top 10 Media From:");
         JLabel startLabel = new JLabel("Start Date");
@@ -55,7 +57,7 @@ public class analyticsGUI extends JFrame {
         cultClassics.addActionListener(e -> showCult());
         title1.setEditable(true);
         title2.setEditable(true);
-        enterTomato.addActionListener(e -> enterInfo());
+        enterButton.addActionListener(e -> enterInfo());
         
         // Back to welcome page button
         btn_back_to_welc.setBounds(10, 10, 200, 25);
@@ -110,7 +112,7 @@ public class analyticsGUI extends JFrame {
     }
 
     public void enterInfo(){
-
+        titleText.setText("Top 10 Most Watched Media");
         foundTitles.clear();
         
         String start_date = startField.getText();
@@ -139,12 +141,13 @@ public class analyticsGUI extends JFrame {
 
     //* Aidan
     public void showCult(){
+        titleText.setText("Cult Classics");
         foundTitles.clear();
         
         MainFile mainFile = new MainFile();
 
         //Connect to database
-        ResultSet rs = mainFile.runSQLString("SELECT A.media_title FROM mediacollection A WHERE A.media_id in () AS Foo");
+        ResultSet rs = mainFile.runSQLString("SELECT media_title FROM mediacollection A WHERE A.media_id in( SELECT media_id FROM( SELECT media_id, COUNT(media_id) AS value_occurrence FROM customersratings WHERE customer_rating > 3 GROUP BY media_id ORDER BY value_occurrence DESC LIMIT 10) AS foo);");
         try{
             while(rs.next()){
                 foundTitles.add(rs.getString("media_title") + "\n");

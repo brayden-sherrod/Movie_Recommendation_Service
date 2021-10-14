@@ -19,15 +19,20 @@ public class homeGUI extends JFrame {
     JLabel lbl_end = new JLabel("End Date: ");
     JTextField txt_end = new JTextField();
 
-    // scroll pane for recommended 
+    // scroll pane for recommended
     ArrayList<String> arr_list_rec = new ArrayList<String>();
     JList jList_rec = new JList(arr_list_rec.toArray());
-    JScrollPane scroll_pane_rec = new JScrollPane(jList_rec, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); // Scroller where list goes in
+    JScrollPane scroll_pane_rec = new JScrollPane(jList_rec, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); // Scroller where list goes in
 
     // Scroll pane setup for watch history
     ArrayList<String> arr_list_watch_hist = new ArrayList<String>();
     JList jList_watch_hist = new JList(arr_list_watch_hist.toArray());
-    JScrollPane scroll_pane_watch_hist = new JScrollPane(jList_watch_hist, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); // Scroller where list goes in
+    JScrollPane scroll_pane_watch_hist = new JScrollPane(jList_watch_hist,
+            ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER); // Scroller
+                                                                                                            // where
+                                                                                                            // list goes
+                                                                                                            // in
 
     // Variables that will be used in multiple functions of the class
     public String receivedID;
@@ -42,31 +47,37 @@ public class homeGUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // this will make the program shut down
         setTitle("Home");
         setLayout(null);
-        setSize(700,500);
+        setSize(700, 500);
+
+        //viewer beware and veiwer recommendation buttons
+        JButton viewerBeware = new JButton("Viewer Beware");
+        viewerBeware.setBounds(200, 10, 130, 40);
+        JButton viewerChoice = new JButton("Viewer Choice");
+        viewerChoice.setBounds(30, 10, 130, 40);
 
         // Left side of screen
-        JLabel recommendedForYou = new JLabel("Recommended For You");
-            recommendedForYou.setBounds(100, 0, 300, 100);
-        scroll_pane_rec.setBounds(30, 70, 300, 300);
-        JButton searchButton = new JButton("Search For Titles");
-            searchButton.setBounds(30, 400, 150, 40);
-            searchButton.addActionListener(e -> openSearch());
-        
+        JLabel recommendedForYou = new JLabel("Viewer Choice");
+        recommendedForYou.setBounds(100, 20, 300, 100);
+        scroll_pane_rec.setBounds(30, 90, 300, 300);
+        //JButton searchButton = new JButton("Search For Titles");
+        searchButton.setBounds(30, 400, 150, 40);
+        searchButton.addActionListener(e -> openSearch());
+
         // Right side of screen
         JLabel historyLabel = new JLabel("Your Watch History");
-            historyLabel.setBounds(460, 0, 200, 100);
-        scroll_pane_watch_hist.setBounds(360, 70, 310, 300);
-        JButton search = new JButton ("Search");
-            search.setBounds(575, 400, 100, 50);
-            search.addActionListener(e -> populateWatchHist());
+        historyLabel.setBounds(460, 20, 200, 100);
+        scroll_pane_watch_hist.setBounds(360, 90, 310, 300);
+        JButton search = new JButton("Search");
+        search.setBounds(575, 400, 100, 50);
+        search.addActionListener(e -> populateWatchHist());
 
-        //START AND END DATES
+        // START AND END DATES
         // x, y, width, height
         lbl_start.setBounds(220, 405, 175, 25);
-        txt_start.setBounds(300, 405, 75, 25);
+        txt_start.setBounds(300, 405, 100, 25);
 
         lbl_end.setBounds(400, 405, 175, 25);
-        txt_end.setBounds(470, 405, 75, 25);
+        txt_end.setBounds(470, 405, 100, 25);
 
         // Add components to frame
         add(scroll_pane_rec);
@@ -79,24 +90,24 @@ public class homeGUI extends JFrame {
         add(lbl_end);
         add(txt_end);
         add(search);
+        add(viewerBeware);
+        add(viewerChoice);
 
         jList_watch_hist.addMouseListener(mouseListener);
 
         // Center the frame window on middle of screen and then allow it to be visible
         setLocationRelativeTo(null);
         setVisible(true);
-
-        txt_start.repaint();
     }
 
-    public void openSearch(){
+    public void openSearch() {
         new searchGUI(receivedID);
         setVisible(false);
         dispose();
     }
 
     // Depends on startDate and endDate specified by customer
-    public void populateWatchHist(){
+    public void populateWatchHist() {
 
         startDate = txt_start.getText();
         endDate = txt_end.getText();
@@ -104,11 +115,24 @@ public class homeGUI extends JFrame {
         arr_list_watch_hist.clear();
 
         MainFile mainFile = new MainFile();
-        ResultSet rs = mainFile.runSQLString("SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '" + receivedID + "') AND (customersratings.date_rated BETWEEN '" + startDate + "' AND '" + endDate + "') ORDER BY date_rated DESC;");
+
+        ResultSet rs = mainFile.runSQLString(
+                "SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '"
+                        + receivedID + "') AND (customersratings.date_rated BETWEEN '" + startDate + "' AND '" + endDate
+                        + "') ORDER BY date_rated DESC;");
+        ;
+
+        // nullptr exception catch
+
         try {
-            while (rs.next()) {
-                arr_list_watch_hist.add(rs.getString("media_title") + "\n");
+            try {
+                while (rs.next()) {
+                    arr_list_watch_hist.add(rs.getString("media_title") + "\n");
+                }
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Check your dates and try again.");
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -134,4 +158,67 @@ public class homeGUI extends JFrame {
             }
         }
     };
+
+    public void choiceFunc(){
+
+        arr_list_watch_hist.clear();
+
+        MainFile mainFile = new MainFile();
+
+        ResultSet rs = mainFile.runSQLString(
+                "SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '"
+                        + receivedID + "') AND (customersratings.date_rated BETWEEN '" + startDate + "' AND '" + endDate
+                        + "') ORDER BY date_rated DESC;");
+    
+        try {
+            try {
+                while (rs.next()) {
+                    arr_list_watch_hist.add(rs.getString("media_title") + "\n");
+                }
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Check your dates and try again.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (arr_list_watch_hist.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No Titles Found");
+        }
+
+        jList_watch_hist.setListData(arr_list_watch_hist.toArray());
+        jList_watch_hist.repaint();
+        scroll_pane_watch_hist.repaint();
+    }
+
+    public void bewareFunc() {
+        arr_list_watch_hist.clear();
+
+        MainFile mainFile = new MainFile();
+
+        ResultSet rs = mainFile.runSQLString();
+        
+
+        try {
+            try {
+                while (rs.next()) {
+                    arr_list_watch_hist.add(rs.getString("media_title") + "\n");
+                }
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Check your dates and try again.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (arr_list_watch_hist.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No Titles Found");
+        }
+
+        jList_watch_hist.setListData(arr_list_watch_hist.toArray());
+        jList_watch_hist.repaint();
+        scroll_pane_watch_hist.repaint();
+    }
 }
