@@ -18,6 +18,8 @@ public class MainFile {
         // yearly
         // 2004-12-31
         // 2005-12-31
+
+        //! bad dates break program
         
         //! TEMPORARY for testing
         // analyticsGUI anGUI = new analyticsGUI();
