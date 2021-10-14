@@ -19,6 +19,8 @@ public class analyticsGUI extends JFrame {
 
     JTextField startField = new JTextField();
     JTextField endField = new JTextField();
+    JTextField title1 = new JTextField();
+    JTextField title2 = new JTextField();
 
     public analyticsGUI() {
         // Frame configurations
@@ -34,11 +36,26 @@ public class analyticsGUI extends JFrame {
         // Components
         JLabel titleText = new JLabel("Top 10 Most Watched Media");
         JButton enterButton = new JButton("Enter");
-            
+        JLabel top10Label = new JLabel("Top 10 Media From:");
+        JLabel startLabel = new JLabel("Start Date");
+        JLabel endLabel = new JLabel("End Date");
+
+        JButton hollywoodPairs = new JButton("Hollywood Pairs");  //* PHASE 4
+        JButton cultClassics = new JButton("Cult Classics");      // " "
+        JLabel freshTomato = new JLabel("Fresh Tomato Number:");  // " "
+        JButton enterTomato = new JButton("Enter");
+        JLabel title1Label = new JLabel("Title 1");
+        JLabel title2Label = new JLabel("Title 2");        
+
         // Components config
         startField.setEditable(true);
         endField.setEditable(true);
-        enterButton.addActionListener(e -> enterInfo());
+        
+        hollywoodPairs.addActionListener(e -> showPairs());   //* PHASE 4 
+        cultClassics.addActionListener(e -> showCult());
+        title1.setEditable(true);
+        title2.setEditable(true);
+        enterTomato.addActionListener(e -> enterInfo());
         
         // Back to welcome page button
         btn_back_to_welc.setBounds(10, 10, 200, 25);
@@ -47,17 +64,43 @@ public class analyticsGUI extends JFrame {
 
         // Configure component placements
         titleText.setBounds(270, 20, 200, 30);
-        scroll_pane_title_list.setBounds(100, 60, 500, 300);
-        startField.setBounds(100, 380, 120, 40);
-        endField.setBounds(290, 380, 120, 40);
-        enterButton.setBounds(480, 380, 120, 40);
+        scroll_pane_title_list.setBounds(100, 60, 500, 250);
+
+        top10Label.setBounds(490, 300, 120, 40);
+        startField.setBounds(420, 360, 120, 40);
+        startLabel.setBounds(460, 320, 120, 40);
+        endLabel.setBounds(580, 320, 120, 40);
+        endField.setBounds(560, 360, 120, 40);
+        enterButton.setBounds(490, 410, 120, 30);
         
+        hollywoodPairs.setBounds(40, 315, 200, 20);
+        cultClassics.setBounds(40, 340, 200, 20);
+        freshTomato.setBounds(95, 360, 200, 40);
+        title1Label.setBounds(40, 390, 200, 20);
+        title2Label.setBounds(160, 390, 200, 20);
+        title1.setBounds(20, 420, 100, 30);
+        title2.setBounds(130, 420, 100, 30);
+        enterTomato.setBounds(240, 418, 100, 30);
+
         // Add components to frame
         panel.add(titleText);
         panel.add(scroll_pane_title_list);
+
+        panel.add(top10Label);
         panel.add(startField);
+        panel.add(startLabel);
         panel.add(endField);
+        panel.add(endLabel);
         panel.add(enterButton);
+
+        panel.add(hollywoodPairs);
+        panel.add(cultClassics);
+        panel.add(freshTomato);
+        panel.add(title1Label);
+        panel.add(title2Label);
+        panel.add(title1);
+        panel.add(title2);
+        panel.add(enterTomato);
 
         // Add panel to frame and allow visibility
         add(panel, BorderLayout.CENTER);
@@ -94,10 +137,45 @@ public class analyticsGUI extends JFrame {
         }
     }
 
+    //* Aidan
+    public void showCult(){
+        foundTitles.clear();
+        
+        MainFile mainFile = new MainFile();
+
+        //Connect to database
+        ResultSet rs = mainFile.runSQLString("SELECT A.media_title FROM mediacollection A WHERE A.media_id in () AS Foo");
+        try{
+            while(rs.next()){
+                foundTitles.add(rs.getString("media_title") + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //Display found titles
+        foundTitlesList.setListData(foundTitles.toArray());
+        foundTitlesList.repaint();
+        scroll_pane_title_list.repaint();
+        for(int i = 0; i < foundTitles.size(); ++i){
+            System.out.println(foundTitles.get(i));
+        }
+    }
+    
+
     public void backWelcFunc(){
         new welcomeGUI();
         setVisible(false);
         dispose();
     }
+    
+    //* Brayden
+    public void showPairs(){
+        
+    }
 
+    //* Rose
+    public void enterTitles(){
+
+    }
 }
