@@ -179,6 +179,29 @@ public class analyticsGUI extends JFrame {
 
     //* Rose
     public void enterTitles(){
+        foundTitles.clear();
 
+        String firstTitle = title1.getText();
+        String secondTitle = title2.getText();
+
+        // STEP 1: Check if both titles are rated by customers
+        MainFile mainFile = new MainFile();
+        ResultSet rs = mainFile.runSQLString("TO DO COMMAND");
+        int titleValidityCode = 0;   // 0=before scanned for title ratings; 1=first title not found; 2=second title not found; 3=both titles found
+        try {
+            while (rs.next()) {
+                foundTitles.add(rs.getString("media_title") + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        // Display the titles
+        foundTitlesList.setListData(foundTitles.toArray());
+        foundTitlesList.repaint();
+        scroll_pane_title_list.repaint();
+        for (int i = 0; i < foundTitles.size(); i++) {
+            System.out.println(foundTitles.get(i));
+        }
     }
 }
