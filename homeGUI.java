@@ -175,7 +175,6 @@ public class homeGUI extends JFrame {
         ResultSet rs = mainFile.runSQLString(
                 "SELECT genre FROM (SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customersratings.customer_id = '923517') AS mergedTable GROUP BY genre ORDER BY COUNT(*) DESC LIMIT 3;");
 
-
         // SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id;
             // this merges mediagenres and customerratings by media_id
 
