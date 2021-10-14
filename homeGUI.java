@@ -208,6 +208,8 @@ public class homeGUI extends JFrame {
 
         //* SECOND QUERY -----------------
 
+
+        
         // SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = 'Comedy' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '923517')) AS mergedTable;
         // SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = 'Comedy' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '923517') AND mediacollection.average_rating > 7.0) AS mergedTable;
 
