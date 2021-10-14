@@ -211,12 +211,19 @@ public class homeGUI extends JFrame {
         // SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = 'Comedy' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '923517')) AS mergedTable;
         // SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = 'Comedy' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '923517') AND mediacollection.average_rating > 7.0) AS mergedTable;
 
+        ResultSet rs1 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + favoriteGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 7.0) AS mergedTable;");
+
+        //favorite genre result set
 
 
+        ResultSet rs2 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + secondFavGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 7.0) AS mergedTable;");
+
+        // second favorite genre result set
 
 
+        ResultSet rs3 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + thirdFaveGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 7.0) AS mergedTable;");
 
-
+        //third favorite genre result set
 
 
 
