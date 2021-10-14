@@ -39,6 +39,8 @@ public class homeGUI extends JFrame {
     public String startDate;
     public String endDate;
 
+    JLabel recommendedForYou = new JLabel("Viewer Choice");
+
     public homeGUI(String receivedID) {
 
         this.receivedID = receivedID;
@@ -49,14 +51,17 @@ public class homeGUI extends JFrame {
         setLayout(null);
         setSize(700, 500);
 
-        //viewer beware and veiwer recommendation buttons
+        // viewer beware and veiwer recommendation buttons
         JButton viewerBeware = new JButton("Viewer Beware");
         viewerBeware.setBounds(200, 10, 130, 40);
+        viewerBeware.addActionListener(e -> bewareFunc());
         JButton viewerChoice = new JButton("Viewer Choice");
         viewerChoice.setBounds(30, 10, 130, 40);
+        viewerChoice.addActionListener(e -> choiceFunc());
 
         // Left side of screen
-        JLabel recommendedForYou = new JLabel("Viewer Choice");
+        
+        
         recommendedForYou.setBounds(100, 20, 300, 100);
         scroll_pane_rec.setBounds(30, 90, 300, 300);
         JButton searchButton = new JButton("Search For Titles");
@@ -159,9 +164,11 @@ public class homeGUI extends JFrame {
         }
     };
 
-    public void choiceFunc(){
+    //TODO - Daniel
+    public void choiceFunc() {
 
         arr_list_watch_hist.clear();
+        recommendedForYou.setText("Viewer Choice");
 
         MainFile mainFile = new MainFile();
 
@@ -169,16 +176,11 @@ public class homeGUI extends JFrame {
                 "SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '"
                         + receivedID + "') AND (customersratings.date_rated BETWEEN '" + startDate + "' AND '" + endDate
                         + "') ORDER BY date_rated DESC;");
-    
-        try {
-            try {
-                while (rs.next()) {
-                    arr_list_watch_hist.add(rs.getString("media_title") + "\n");
-                }
-            } catch (NullPointerException e) {
-                JOptionPane.showMessageDialog(null, "Check your dates and try again.");
-            }
 
+        try {
+            while (rs.next()) {
+                arr_list_watch_hist.add(rs.getString("media_title") + "\n");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -194,11 +196,11 @@ public class homeGUI extends JFrame {
 
     public void bewareFunc() {
         arr_list_watch_hist.clear();
+        recommendedForYou.setText("Viewer Beware");
 
         MainFile mainFile = new MainFile();
 
-        ResultSet rs = mainFile.runSQLString();
-        
+        ResultSet rs = mainFile.runSQLString("");
 
         try {
             try {
