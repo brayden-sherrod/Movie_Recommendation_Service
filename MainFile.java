@@ -23,7 +23,7 @@ public class MainFile {
         
         //! TEMPORARY for testing
         // analyticsGUI anGUI = new analyticsGUI();
-        // homeGUI homeGUI = new homeGUI("923517");
+        homeGUI homeGUI = new homeGUI("923517");
         // searchGUI searchGUI = new searchGUI();
         // watchGUI wG = new watchGUI("test title", "1488844");
     }
