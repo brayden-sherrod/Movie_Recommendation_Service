@@ -173,17 +173,50 @@ public class homeGUI extends JFrame {
         MainFile mainFile = new MainFile();
 
         ResultSet rs = mainFile.runSQLString(
-                "SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '"
-                        + receivedID + "') AND (customersratings.date_rated BETWEEN '" + startDate + "' AND '" + endDate
-                        + "') ORDER BY date_rated DESC;");
+                "SELECT genre FROM (SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customersratings.customer_id = '923517') AS mergedTable GROUP BY genre ORDER BY COUNT(*) DESC LIMIT 3;");
+
+
+        // SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id;
+            // this merges mediagenres and customerratings by media_id
+
+        // SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customerratings.custoemr_id = '923517';
+            // now were doing it for a certain customer only
+
+        // ! SELECT genre COUNT(genre) AS 'value_occurrence' FROM ('SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customersratings.customer_id = '923517') GROUP BY genre ORDER BY 'value_occurrence' DESC LIMIT 1;
+
+        // SELECT genre FROM (SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customersratings.customer_id = '923517') AS mergedTable GROUP BY genre ORDER BY COUNT(*) DESC LIMIT 3;
+
+        String favoriteGenre;
+        String secondFavGenre;
+        String thirdFaveGenre;
 
         try {
-            while (rs.next()) {
-                arr_list_watch_hist.add(rs.getString("media_title") + "\n");
-            }
+            rs.next();
+            favoriteGenre = rs.getString("genre");
+
+            rs.next();
+            secondFavGenre = rs.getString("genre");
+
+            rs.next();
+            thirdFaveGenre = rs.getString("genre");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        //* SECOND QUERY -----------------
+
+
+
+
+
+
+
+
+
+
+
+
 
         if (arr_list_watch_hist.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No Titles Found");
