@@ -64,7 +64,7 @@ public class homeGUI extends JFrame {
         
         recommendedForYou.setBounds(100, 20, 300, 100);
         scroll_pane_rec.setBounds(30, 90, 300, 300);
-        //JButton searchButton = new JButton("Search For Titles");
+        JButton searchButton = new JButton("Search For Titles");
         searchButton.setBounds(30, 400, 150, 40);
         searchButton.addActionListener(e -> openSearch());
 
@@ -198,29 +198,29 @@ public class homeGUI extends JFrame {
         arr_list_watch_hist.clear();
         recommendedForYou.setText("Viewer Beware");
 
-        MainFile mainFile = new MainFile();
+        // MainFile mainFile = new MainFile();
 
-        ResultSet rs = mainFile.runSQLString("");
+        // ResultSet rs = mainFile.runSQLString("");
 
-        try {
-            try {
-                while (rs.next()) {
-                    arr_list_watch_hist.add(rs.getString("media_title") + "\n");
-                }
-            } catch (NullPointerException e) {
-                JOptionPane.showMessageDialog(null, "Check your dates and try again.");
-            }
+        // try {
+        //     try {
+        //         while (rs.next()) {
+        //             arr_list_watch_hist.add(rs.getString("media_title") + "\n");
+        //         }
+        //     } catch (NullPointerException e) {
+        //         JOptionPane.showMessageDialog(null, "Check your dates and try again.");
+        //     }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // } catch (SQLException e) {
+        //     e.printStackTrace();
+        // }
 
-        if (arr_list_watch_hist.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No Titles Found");
-        }
+        // if (arr_list_watch_hist.isEmpty()) {
+        //     JOptionPane.showMessageDialog(null, "No Titles Found");
+        // }
 
-        jList_watch_hist.setListData(arr_list_watch_hist.toArray());
-        jList_watch_hist.repaint();
-        scroll_pane_watch_hist.repaint();
+        // jList_watch_hist.setListData(arr_list_watch_hist.toArray());
+        // jList_watch_hist.repaint();
+        // scroll_pane_watch_hist.repaint();
     }
 }
