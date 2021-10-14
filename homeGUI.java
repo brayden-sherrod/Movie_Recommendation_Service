@@ -50,12 +50,13 @@ public class homeGUI extends JFrame {
         setSize(700, 500);
 
         //viewer beware and veiwer recommendation buttons
-        JButton searchButton = new JButton("Search For Titles");
-        searchButton.setBounds(30, 400, 150, 40);
-        // searchButton.addActionListener(e -> openSearch());
+        JButton viewerBeware = new JButton("Viewer Beware");
+        viewerBeware.setBounds(200, 10, 130, 40);
+        JButton viewerChoice = new JButton("Viewer Choice");
+        viewerChoice.setBounds(30, 10, 130, 40);
 
         // Left side of screen
-        JLabel recommendedForYou = new JLabel("Recommended For You");
+        JLabel recommendedForYou = new JLabel("Viewer Choice");
         recommendedForYou.setBounds(100, 20, 300, 100);
         scroll_pane_rec.setBounds(30, 90, 300, 300);
         JButton searchButton = new JButton("Search For Titles");
@@ -89,14 +90,14 @@ public class homeGUI extends JFrame {
         add(lbl_end);
         add(txt_end);
         add(search);
+        add(viewerBeware);
+        add(viewerChoice);
 
         jList_watch_hist.addMouseListener(mouseListener);
 
         // Center the frame window on middle of screen and then allow it to be visible
         setLocationRelativeTo(null);
         setVisible(true);
-
-        txt_start.repaint();
     }
 
     public void openSearch() {
@@ -121,7 +122,7 @@ public class homeGUI extends JFrame {
                         + "') ORDER BY date_rated DESC;");
         ;
 
-        // ! nullptr exception catch
+        // nullptr exception catch
 
         try {
             try {
@@ -157,4 +158,67 @@ public class homeGUI extends JFrame {
             }
         }
     };
+
+    public void choiceFunc(){
+
+        arr_list_watch_hist.clear();
+
+        MainFile mainFile = new MainFile();
+
+        ResultSet rs = mainFile.runSQLString(
+                "SELECT * FROM mediacollection JOIN customersratings ON mediacollection.media_id=customersratings.media_id WHERE (customersratings.customer_id = '"
+                        + receivedID + "') AND (customersratings.date_rated BETWEEN '" + startDate + "' AND '" + endDate
+                        + "') ORDER BY date_rated DESC;");
+    
+        try {
+            try {
+                while (rs.next()) {
+                    arr_list_watch_hist.add(rs.getString("media_title") + "\n");
+                }
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Check your dates and try again.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (arr_list_watch_hist.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No Titles Found");
+        }
+
+        jList_watch_hist.setListData(arr_list_watch_hist.toArray());
+        jList_watch_hist.repaint();
+        scroll_pane_watch_hist.repaint();
+    }
+
+    public void bewareFunc() {
+        arr_list_watch_hist.clear();
+
+        MainFile mainFile = new MainFile();
+
+        ResultSet rs = mainFile.runSQLString();
+        
+
+        try {
+            try {
+                while (rs.next()) {
+                    arr_list_watch_hist.add(rs.getString("media_title") + "\n");
+                }
+            } catch (NullPointerException e) {
+                JOptionPane.showMessageDialog(null, "Check your dates and try again.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (arr_list_watch_hist.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No Titles Found");
+        }
+
+        jList_watch_hist.setListData(arr_list_watch_hist.toArray());
+        jList_watch_hist.repaint();
+        scroll_pane_watch_hist.repaint();
+    }
 }
