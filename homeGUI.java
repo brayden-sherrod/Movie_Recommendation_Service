@@ -64,7 +64,7 @@ public class homeGUI extends JFrame {
         
         recommendedForYou.setBounds(100, 20, 300, 100);
         scroll_pane_rec.setBounds(30, 90, 300, 300);
-        JButton searchButton = new JButton("Search For Titles");
+        //JButton searchButton = new JButton("Search For Titles");
         searchButton.setBounds(30, 400, 150, 40);
         searchButton.addActionListener(e -> openSearch());
 
