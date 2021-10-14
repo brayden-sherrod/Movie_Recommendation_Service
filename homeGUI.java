@@ -34,8 +34,6 @@ public class homeGUI extends JFrame {
     public String startDate;
     public String endDate;
 
-
-
     public homeGUI(String receivedID) {
 
         this.receivedID = receivedID;
