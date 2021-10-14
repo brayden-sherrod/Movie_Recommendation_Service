@@ -60,8 +60,8 @@ public class homeGUI extends JFrame {
         viewerChoice.addActionListener(e -> choiceFunc());
 
         // Left side of screen
-        
-        
+
+
         recommendedForYou.setBounds(100, 20, 300, 100);
         scroll_pane_rec.setBounds(30, 90, 300, 300);
         JButton searchButton = new JButton("Search For Titles");
@@ -174,7 +174,8 @@ public class homeGUI extends JFrame {
 
         ResultSet rs = mainFile.runSQLString(
                 "SELECT genre FROM (SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customersratings.customer_id = '923517') AS mergedTable GROUP BY genre ORDER BY COUNT(*) DESC LIMIT 3;");
-
+                //"SELECT genre FROM (SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE
+                //customersratings.customer_id = '923517') AS mergedTable GROUP BY genre ORDER BY COUNT(*) DESC LIMIT 3;"
         // SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id;
             // this merges mediagenres and customerratings by media_id
 
@@ -184,6 +185,8 @@ public class homeGUI extends JFrame {
         // ! SELECT genre COUNT(genre) AS 'value_occurrence' FROM ('SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customersratings.customer_id = '923517') GROUP BY genre ORDER BY 'value_occurrence' DESC LIMIT 1;
 
         // SELECT genre FROM (SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customersratings.customer_id = '923517') AS mergedTable GROUP BY genre ORDER BY COUNT(*) DESC LIMIT 3;
+
+        // SELECT * FROM mediagenres WHERE mediagenres.genre = 'Comedy';
 
         String favoriteGenre;
         String secondFavGenre;
@@ -205,7 +208,7 @@ public class homeGUI extends JFrame {
 
         //* SECOND QUERY -----------------
 
-
+        // SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = 'Comedy' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '923517')) AS mergedTable;
 
 
 
