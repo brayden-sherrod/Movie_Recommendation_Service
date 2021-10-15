@@ -221,16 +221,23 @@ public class analyticsGUI extends JFrame {
             JOptionPane.showMessageDialog(null, "Title 2 has no ratings. Enter a different title.");
         } else { // Successful - Titles have ratings. 
 
+            // 1. Get first chain link
+            String userA = "";
+            String userA_rating = "";
             rs = mainFile.runSQLString("SELECT B.customer_id, B.customer_rating FROM mediacollection A INNER JOIN customersratings B ON A.media_id = B.media_id WHERE B.customer_rating >= 4 AND media_title = '" + firstTitle + "' ORDER BY customer_rating DESC;");
             try {
-                while (rs.next()) {
-                    foundTitles.add("CUSTOMER=" + rs.getArray(1) + "; RATING=" + rs.getArray(2) + "\n");
+                if (rs.next()) {
+                    userA = rs.getString(1);
+                    userA_rating = rs.getString(2);
+                    //foundTitles.add("CUSTOMER=" + rs.getArray(1) + "; RATING=" + rs.getArray(2) + "\n");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
+            System.out.println("CUSTOMER= " + userA + "\nRATING= " + userA_rating + "\n");
+
         }
-        
         // Display the titles
         foundTitlesList.setListData(foundTitles.toArray());
         foundTitlesList.repaint();
