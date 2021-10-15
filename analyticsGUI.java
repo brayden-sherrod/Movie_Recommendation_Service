@@ -35,6 +35,7 @@ public class analyticsGUI extends JFrame {
         panel.setLayout(null);
 
         // Components
+        JButton freshTomatoHelpButton = new JButton("?");
         JButton enterButton = new JButton("Enter");
         JLabel top10Label = new JLabel("Top 10 Media From:");
         JLabel startLabel = new JLabel("Start Date");
@@ -55,8 +56,8 @@ public class analyticsGUI extends JFrame {
         cultClassics.addActionListener(e -> showCult());
         title1.setEditable(true);
         title2.setEditable(true);
+        freshTomatoHelpButton.addActionListener(e -> freshTomatoHelp());
         enterButton.addActionListener(e -> enterInfo());
-
         enterTomato.addActionListener(e -> enterTitles());
         
         // Back to welcome page button
@@ -78,11 +79,12 @@ public class analyticsGUI extends JFrame {
         hollywoodPairs.setBounds(40, 315, 200, 20);
         cultClassics.setBounds(40, 340, 200, 20);
         freshTomato.setBounds(95, 360, 200, 40);
-        title1Label.setBounds(40, 390, 200, 20);
-        title2Label.setBounds(160, 390, 200, 20);
+        title1Label.setBounds(50, 400, 200, 20);
+        title2Label.setBounds(160, 400, 200, 20);
         title1.setBounds(20, 420, 100, 30);
         title2.setBounds(130, 420, 100, 30);
         enterTomato.setBounds(240, 418, 100, 30);
+        freshTomatoHelpButton.setBounds(40, 370, 45, 20);
 
         // Add components to frame
         panel.add(titleText);
@@ -103,12 +105,19 @@ public class analyticsGUI extends JFrame {
         panel.add(title1);
         panel.add(title2);
         panel.add(enterTomato);
+        panel.add(freshTomatoHelpButton);
 
         // Add panel to frame and allow visibility
         add(panel, BorderLayout.CENTER);
         setLocationRelativeTo(null); // center the window on the screen
         setVisible(true);
 
+    }
+
+    public void freshTomatoHelp(){
+        new freshTomatoGUI();
+        setVisible(false);
+        dispose();
     }
 
     public void enterInfo(){
@@ -138,7 +147,13 @@ public class analyticsGUI extends JFrame {
             System.out.println(foundTitles.get(i));
         }
     }
-
+    
+    public void backWelcFunc(){
+        new welcomeGUI();
+        setVisible(false);
+        dispose();
+    }
+    
     //* Aidan
     public void showCult(){
         titleText.setText("Cult Classics");
@@ -164,14 +179,7 @@ public class analyticsGUI extends JFrame {
             System.out.println(foundTitles.get(i));
         }
     }
-    
 
-    public void backWelcFunc(){
-        new welcomeGUI();
-        setVisible(false);
-        dispose();
-    }
-    
     //* Brayden
     public void showPairs(){
         
