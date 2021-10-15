@@ -23,7 +23,6 @@ public class analyticsGUI extends JFrame {
     JTextField title2 = new JTextField();
     JLabel titleText = new JLabel("Top 10 Most Watched Media");
     
-
     public analyticsGUI() {
         // Frame configurations
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -181,6 +180,7 @@ public class analyticsGUI extends JFrame {
 
     //* Rose
     public void enterTitles(){
+        titleText.setText("Fresh Tomato Number");
         foundTitles.clear();
 
         // NOTE: This class method assumes that the user will not input any typos
@@ -211,7 +211,7 @@ public class analyticsGUI extends JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("Title1RatingCount=" + title1RatingCount + "\nTitle2RatingCount=" + title2RatingCount);
+        
         // STEP 3: Depending on ratings validity for title1 and title2, continue feature functionality
         if ( title1RatingCount==0 && title2RatingCount==0 ) { 
             JOptionPane.showMessageDialog(null, "Title 1 and Title 2 have no ratings. Enter different titles.");
@@ -221,6 +221,14 @@ public class analyticsGUI extends JFrame {
             JOptionPane.showMessageDialog(null, "Title 2 has no ratings. Enter a different title.");
         } else { // Successful - Titles have ratings. 
 
+            rs = mainFile.runSQLString("SELECT B.customer_id, B.customer_rating FROM mediacollection A INNER JOIN customersratings B ON A.media_id = B.media_id WHERE B.customer_rating >= 4 AND media_title = '" + firstTitle + "' ORDER BY customer_rating DESC;");
+            try {
+                while (rs.next()) {
+                    foundTitles.add("CUSTOMER=" + rs.getArray(1) + "; RATING=" + rs.getArray(2) + "\n");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         
         // Display the titles
