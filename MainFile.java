@@ -4,7 +4,7 @@ public class MainFile {
         
     public static void main(String[] args) {
         // STEP 2: Build new GUI object
-        new welcomeGUI(); // Test Customer ID: 923517
+        new welcomeGUI(); // Test Customer ID: 923517, 2625420
 
         // TEST VALUES
         // Weekly
