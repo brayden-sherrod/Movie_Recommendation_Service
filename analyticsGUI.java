@@ -180,17 +180,19 @@ public class analyticsGUI extends JFrame {
 
     //* Rose
     public void enterTitles(){
+
         titleText.setText("Fresh Tomato Number");
         foundTitles.clear();
-
-        // NOTE: This class method assumes that the user will not input any typos
         String firstTitle = title1.getText();
         String secondTitle = title2.getText();
 
-        // STEP 1: Check if title1 is rated HIGHLY (4 or 5) by any customers
+        // STEP 0: Connect to database
         MainFile mainFile = new MainFile();
+        mainFile.openConn();
+
+        // STEP 1: Check if title1 is rated HIGHLY (4 or 5) by any customers
         int title1RatingCount = 0;
-        ResultSet rs = mainFile.runSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + firstTitle + "') AND A.customer_rating >= 4;");
+        ResultSet rs = mainFile.runFasterSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + firstTitle + "') AND A.customer_rating >= 4;");
         try {
             while (rs.next()) {
                 long count = rs.getLong(1);
@@ -202,7 +204,7 @@ public class analyticsGUI extends JFrame {
 
         // STEP 2: Check if title2 is rated HIGHLY (4 or 5) by any customers
         int title2RatingCount = 0;
-        rs = mainFile.runSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + secondTitle + "') AND A.customer_rating >= 4;");
+        rs = mainFile.runFasterSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + secondTitle + "') AND A.customer_rating >= 4;");
         try {
             while (rs.next()) {
                 long count = rs.getLong(1);
@@ -224,7 +226,7 @@ public class analyticsGUI extends JFrame {
             // 1. Get first chain link (Find a user that rated title1 highly)
             String userA = "";
             String userA_rating = "";
-            rs = mainFile.runSQLString("SELECT B.customer_id, B.customer_rating FROM mediacollection A INNER JOIN customersratings B ON A.media_id = B.media_id WHERE B.customer_rating >= 4 AND media_title = '" + firstTitle + "' ORDER BY customer_rating DESC;");
+            rs = mainFile.runFasterSQLString("SELECT B.customer_id, B.customer_rating FROM mediacollection A INNER JOIN customersratings B ON A.media_id = B.media_id WHERE B.customer_rating >= 4 AND media_title = '" + firstTitle + "' ORDER BY customer_rating DESC;");
             try {
                 if (rs.next()) {
                     userA = rs.getString(1);
@@ -235,8 +237,8 @@ public class analyticsGUI extends JFrame {
             }
             // 2. Second chain link (Find a user that rated title2 highly)
             String userB = "";
-            String userB_rating = "SELECT B.customer_id, B.customer_rating FROM mediacollection A INNER JOIN customersratings B ON A.media_id = B.media_id WHERE B.customer_rating >= 4 AND media_title = '" + secondTitle + "' ORDER BY customer_rating DESC;";
-            rs = mainFile.runSQLString("");
+            String userB_rating = "";
+            rs = mainFile.runFasterSQLString("SELECT B.customer_id, B.customer_rating FROM mediacollection A INNER JOIN customersratings B ON A.media_id = B.media_id WHERE B.customer_rating >= 4 AND media_title = '" + secondTitle + "' ORDER BY customer_rating DESC;");
             try {
                 if (rs.next()) {
                     userB = rs.getString(1);
@@ -246,7 +248,11 @@ public class analyticsGUI extends JFrame {
                 e.printStackTrace();
             }
             // 3. Find a different title that userA rated highly (that is not title1 or title2)
-            
+
+            //System.out.println(userB);
+            System.out.println("UserA: " + userA + " | UserA_Rating: " + userA_rating + "\nUserB: " + userB + " | UserB_Rating: " + userB_rating);
+
+            mainFile.closeConn();
         }
         // Display the titles
         foundTitlesList.setListData(foundTitles.toArray());
