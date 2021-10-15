@@ -48,7 +48,6 @@ public class MainFile {
         System.out.println("Opened database successfully");
 
         // STEP 2: Get something from the database
-        String name = "";
 
         ResultSet result = null;
         try {

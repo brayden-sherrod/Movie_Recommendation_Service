@@ -84,7 +84,7 @@ public class searchGUI extends JFrame {
     }
 
     public void backHome() {
-        homeGUI home = new homeGUI(receivedID);
+        new homeGUI(receivedID);
         setVisible(false);
         dispose();
     }
