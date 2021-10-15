@@ -213,6 +213,26 @@ public class analyticsGUI extends JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        // STEP 2.5: Get ID's of given title names
+        String firstTitleID = "";
+        String secondTitleID = "";
+        rs = mainFile.runFasterSQLString("SELECT media_id FROM mediacollection WHERE media_title = '" + firstTitle + "';");
+        try {
+            if (rs.next()) {
+                firstTitleID = rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        rs = mainFile.runFasterSQLString("SELECT media_id FROM mediacollection WHERE media_title = '" + secondTitle + "';");
+        try {
+            if (rs.next()) {
+                secondTitleID = rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         
         // STEP 3: Depending on ratings validity for title1 and title2, continue feature functionality
         if ( title1RatingCount==0 && title2RatingCount==0 ) { 
@@ -247,7 +267,7 @@ public class analyticsGUI extends JFrame {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            // 3. Find a different title that userA rated highly (that is not title1 or title2)
+            // 3. Find a different title that both userA and userB rated highly.
 
             //System.out.println(userB);
             System.out.println("UserA: " + userA + " | UserA_Rating: " + userA_rating + "\nUserB: " + userB + " | UserB_Rating: " + userB_rating);
