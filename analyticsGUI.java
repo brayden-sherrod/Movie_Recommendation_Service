@@ -35,7 +35,6 @@ public class analyticsGUI extends JFrame {
         panel.setLayout(null);
 
         // Components
-        
         JButton enterButton = new JButton("Enter");
         JLabel top10Label = new JLabel("Top 10 Media From:");
         JLabel startLabel = new JLabel("Start Date");
@@ -67,7 +66,7 @@ public class analyticsGUI extends JFrame {
 
         // Configure component placements
         titleText.setBounds(270, 20, 200, 30);
-        scroll_pane_title_list.setBounds(100, 60, 500, 250);
+        scroll_pane_title_list.setBounds(20, 60, 650, 240);
 
         top10Label.setBounds(490, 300, 120, 40);
         startField.setBounds(420, 360, 120, 40);
@@ -268,16 +267,60 @@ public class analyticsGUI extends JFrame {
                 e.printStackTrace();
             }
             // 3. Find a different title that both userA and userB rated highly.
-
-            //System.out.println(userB);
+            String middleTitleID = "";
+            rs = mainFile.runFasterSQLString("SELECT media_id FROM (SELECT media_id, count(media_id) AS Cnt FROM (SELECT * FROM customersratings WHERE (customer_id = '" + userA + "' OR customer_id = '" + userB + "') AND (customer_rating >= 4) AND (media_id != '" + firstTitleID + "') AND (media_id != '" + secondTitleID + "')) AS foo GROUP BY media_id) AS foobar WHERE Cnt = '2';");
+            try {
+                if (rs.next()) {
+                    middleTitleID = rs.getString(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            // 4. Get both customer ratings of that middleTitle
+            String middleUserA_Rating = "";
+            String middleUserB_Rating = "";
+            rs = mainFile.runFasterSQLString("SELECT customer_id, customer_rating FROM customersratings WHERE (customer_id = '1722054' OR customer_id = '530789') AND (customer_rating >= 4) AND (media_id != 'tt0118748') AND (media_id != 'tt0039645') AND (media_id = 'tt0034405');");
+            try {
+                while (rs.next()) {
+                    if (rs.getString(1).equals(userA)) {
+                        middleUserA_Rating = rs.getString(2);
+                    } else if (rs.getString(1).equals(userB)) {
+                        middleUserB_Rating = rs.getString(2);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            // 5. Get media_title of that middleTitleID
+            String middleTitle = "";
+            rs = mainFile.runFasterSQLString("SELECT media_title FROM mediacollection WHERE media_id = 'tt0034405';");
+            try {
+                if (rs.next()) {
+                    middleTitle = rs.getString(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            
+            // Check variables in terminal
             System.out.println("UserA: " + userA + " | UserA_Rating: " + userA_rating + "\nUserB: " + userB + " | UserB_Rating: " + userB_rating);
+            System.out.println("Intermediate movie: " + middleTitle + " | UserARated: " + middleUserA_Rating + " | UserBRated: " + middleUserB_Rating);
+
+            // Display
+            foundTitles.add("Shortest Chain:");
+            foundTitles.add("     " + firstTitle + " -> " + middleTitle + " -> " + secondTitle);
+            foundTitles.add(firstTitle + " was rated " + userA_rating + " stars by user " + userA + ".");
+            foundTitles.add("     User " + userA + " also rated the title " + middleTitle + " highly with " + middleUserA_Rating + " stars. ");
+            foundTitles.add("     " + middleTitle + " was rated " + middleUserB_Rating + " stars by user " + userB + " who also rated " + secondTitle + " " + userB_rating + " stars.");
+            foundTitles.add("The shortest chain between these two titles then is " + firstTitle + " to " + userA);
+            foundTitles.add("     to " + middleTitle + " to " + userB + " to " + secondTitle + ".");
+
+            foundTitlesList.setListData(foundTitles.toArray());
+            foundTitlesList.repaint();
+            scroll_pane_title_list.repaint();
 
             mainFile.closeConn();
         }
-        // Display the titles
-        foundTitlesList.setListData(foundTitles.toArray());
-        foundTitlesList.repaint();
-        scroll_pane_title_list.repaint();
 
     }
 }
