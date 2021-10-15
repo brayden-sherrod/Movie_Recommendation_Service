@@ -4,7 +4,7 @@ public class MainFile {
         
     public static void main(String[] args) {
         // STEP 2: Build new GUI object
-        new welcomeGUI(); // Test Customer ID: 923517
+        new welcomeGUI(); // Test Customer ID: 923517, 2625420
 
         // TEST VALUES
         // Weekly
@@ -18,6 +18,8 @@ public class MainFile {
         // yearly
         // 2004-12-31
         // 2005-12-31
+
+        //! bad dates break program
         
         //! TEMPORARY for testing
         // analyticsGUI anGUI = new analyticsGUI();
@@ -32,9 +34,7 @@ public class MainFile {
 
         // STEP 1: Connecting to the database
         try {
-            System.out.println("point 1");
-            Class.forName("org.postgresql.Driver"); //!
-            System.out.println("point 2");
+            Class.forName("org.postgresql.Driver");
             conn = DriverManager.getConnection("jdbc:postgresql://csce-315-db.engr.tamu.edu/csce315903_11db",
                     "csce315903_11user", "new_password");
         } catch (Exception e) {
@@ -48,7 +48,6 @@ public class MainFile {
         System.out.println("Opened database successfully");
 
         // STEP 2: Get something from the database
-        String name = "";
 
         ResultSet result = null;
         try {
@@ -72,5 +71,45 @@ public class MainFile {
         }
         
         return result;
+    }
+
+    /* The following 3 methods can be used for any features of the GUI that need to run multiple commands.
+       it separates opening the connection, running an sql statement, and closing the connection */
+    Connection connQuick = null;
+
+    public void openConn() {
+        // STEP 1: Connecting to the database
+        try {
+            Class.forName("org.postgresql.Driver");
+            connQuick = DriverManager.getConnection("jdbc:postgresql://csce-315-db.engr.tamu.edu/csce315903_11db",
+                    "csce315903_11user", "new_password");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("Opened quicker database connection successfully");
+    }
+
+    public ResultSet runFasterSQLString(String inputSQLString) {
+        ResultSet result = null;
+        try {
+            Statement stmt = connQuick.createStatement();   // create a statement object
+            String sqlStatement = inputSQLString;           // create an SQL statement
+            result = stmt.executeQuery(sqlStatement);       // send statement to DBMS
+
+        } catch (Exception e) {
+            System.out.println("Error accessing Database with Quicker Connection");
+        }
+        return result;
+    }
+
+    public void closeConn() {
+        try {
+            connQuick.close();
+            System.out.println("Quicker database connection closed.");
+        } catch(Exception e) {
+            System.out.println("Quicker Connection NOT Closed.");
+        }
     }
 }

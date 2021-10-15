@@ -1,15 +1,15 @@
 import javax.swing.*;
 
 //import javax.swing.JComboBox;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.sql.*;
-import java.awt.event.*;
-import java.awt.Dimension;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+// import java.util.ArrayList;
+// import java.util.Collections;
+// import java.util.Comparator;
+// import java.util.List;
+// import java.sql.*;
+// import java.awt.event.*;
+// import java.awt.Dimension;
+// import java.awt.BorderLayout;
+// import java.awt.GridLayout;
 
 //pic stuff
 import java.awt.image.BufferedImage;
@@ -75,7 +75,7 @@ public class watchGUI extends JFrame {
     
 
     public void backHome() {
-        homeGUI home = new homeGUI(receivedID);
+        new homeGUI(receivedID);
         setVisible(false);
         dispose();
     }
