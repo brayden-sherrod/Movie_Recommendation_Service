@@ -5,4 +5,6 @@ Person.class
 searchGUI.class
 watchGUI.class
 welcomeGUI.class
+homeGUI$1.class
+searchGUI$1.class
 .DS_Store

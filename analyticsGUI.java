@@ -23,7 +23,6 @@ public class analyticsGUI extends JFrame {
     JTextField title2 = new JTextField();
     JLabel titleText = new JLabel("Top 10 Most Watched Media");
     
-
     public analyticsGUI() {
         // Frame configurations
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,7 +35,6 @@ public class analyticsGUI extends JFrame {
         panel.setLayout(null);
 
         // Components
-        
         JButton enterButton = new JButton("Enter");
         JLabel top10Label = new JLabel("Top 10 Media From:");
         JLabel startLabel = new JLabel("Start Date");
@@ -58,6 +56,8 @@ public class analyticsGUI extends JFrame {
         title1.setEditable(true);
         title2.setEditable(true);
         enterButton.addActionListener(e -> enterInfo());
+
+        enterTomato.addActionListener(e -> enterTitles());
         
         // Back to welcome page button
         btn_back_to_welc.setBounds(10, 10, 200, 25);
@@ -66,7 +66,7 @@ public class analyticsGUI extends JFrame {
 
         // Configure component placements
         titleText.setBounds(270, 20, 200, 30);
-        scroll_pane_title_list.setBounds(100, 60, 500, 250);
+        scroll_pane_title_list.setBounds(20, 60, 650, 240);
 
         top10Label.setBounds(490, 300, 120, 40);
         startField.setBounds(420, 360, 120, 40);
@@ -179,29 +179,148 @@ public class analyticsGUI extends JFrame {
 
     //* Rose
     public void enterTitles(){
-        foundTitles.clear();
 
+        titleText.setText("Fresh Tomato Number");
+        foundTitles.clear();
         String firstTitle = title1.getText();
         String secondTitle = title2.getText();
 
-        // STEP 1: Check if both titles are rated by customers
+        // STEP 0: Connect to database
         MainFile mainFile = new MainFile();
-        ResultSet rs = mainFile.runSQLString("TO DO COMMAND");
-        int titleValidityCode = 0;   // 0=before scanned for title ratings; 1=first title not found; 2=second title not found; 3=both titles found
+        mainFile.openConn();
+
+        // STEP 1: Check if title1 is rated HIGHLY (4 or 5) by any customers
+        int title1RatingCount = 0;
+        ResultSet rs = mainFile.runFasterSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + firstTitle + "') AND A.customer_rating >= 4;");
         try {
             while (rs.next()) {
-                foundTitles.add(rs.getString("media_title") + "\n");
+                long count = rs.getLong(1);
+                title1RatingCount = (int)count;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // STEP 2: Check if title2 is rated HIGHLY (4 or 5) by any customers
+        int title2RatingCount = 0;
+        rs = mainFile.runFasterSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + secondTitle + "') AND A.customer_rating >= 4;");
+        try {
+            while (rs.next()) {
+                long count = rs.getLong(1);
+                title2RatingCount = (int)count;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // STEP 2.5: Get ID's of given title names
+        String firstTitleID = "";
+        String secondTitleID = "";
+        rs = mainFile.runFasterSQLString("SELECT media_id FROM mediacollection WHERE media_title = '" + firstTitle + "';");
+        try {
+            if (rs.next()) {
+                firstTitleID = rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        rs = mainFile.runFasterSQLString("SELECT media_id FROM mediacollection WHERE media_title = '" + secondTitle + "';");
+        try {
+            if (rs.next()) {
+                secondTitleID = rs.getString(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         
-        // Display the titles
-        foundTitlesList.setListData(foundTitles.toArray());
-        foundTitlesList.repaint();
-        scroll_pane_title_list.repaint();
-        for (int i = 0; i < foundTitles.size(); i++) {
-            System.out.println(foundTitles.get(i));
+        // STEP 3: Depending on ratings validity for title1 and title2, continue feature functionality
+        if ( title1RatingCount==0 && title2RatingCount==0 ) { 
+            JOptionPane.showMessageDialog(null, "Title 1 and Title 2 have no high ratings. Enter different titles.");
+        } else if (title1RatingCount==0 && title2RatingCount>0) {
+            JOptionPane.showMessageDialog(null, "Title 1 has no high ratings. Enter a different title.");
+        } else if (title1RatingCount>0 && title2RatingCount==0) {
+            JOptionPane.showMessageDialog(null, "Title 2 has no high ratings. Enter a different title.");
+        } else { // Successful - Titles have ratings. 
+
+            // 1. Get first chain link (Find a user that rated title1 highly)
+            String userA = "";
+            String userA_rating = "";
+            rs = mainFile.runFasterSQLString("SELECT B.customer_id, B.customer_rating FROM mediacollection A INNER JOIN customersratings B ON A.media_id = B.media_id WHERE B.customer_rating >= 4 AND media_title = '" + firstTitle + "' ORDER BY customer_rating DESC;");
+            try {
+                if (rs.next()) {
+                    userA = rs.getString(1);
+                    userA_rating = rs.getString(2);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            // 2. Second chain link (Find a user that rated title2 highly)
+            String userB = "";
+            String userB_rating = "";
+            rs = mainFile.runFasterSQLString("SELECT B.customer_id, B.customer_rating FROM mediacollection A INNER JOIN customersratings B ON A.media_id = B.media_id WHERE B.customer_rating >= 4 AND media_title = '" + secondTitle + "' ORDER BY customer_rating DESC;");
+            try {
+                if (rs.next()) {
+                    userB = rs.getString(1);
+                    userB_rating = rs.getString(2);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            // 3. Find a different title that both userA and userB rated highly.
+            String middleTitleID = "";
+            rs = mainFile.runFasterSQLString("SELECT media_id FROM (SELECT media_id, count(media_id) AS Cnt FROM (SELECT * FROM customersratings WHERE (customer_id = '" + userA + "' OR customer_id = '" + userB + "') AND (customer_rating >= 4) AND (media_id != '" + firstTitleID + "') AND (media_id != '" + secondTitleID + "')) AS foo GROUP BY media_id) AS foobar WHERE Cnt = '2';");
+            try {
+                if (rs.next()) {
+                    middleTitleID = rs.getString(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            // 4. Get both customer ratings of that middleTitle
+            String middleUserA_Rating = "";
+            String middleUserB_Rating = "";
+            rs = mainFile.runFasterSQLString("SELECT customer_id, customer_rating FROM customersratings WHERE (customer_id = '1722054' OR customer_id = '530789') AND (customer_rating >= 4) AND (media_id != 'tt0118748') AND (media_id != 'tt0039645') AND (media_id = 'tt0034405');");
+            try {
+                while (rs.next()) {
+                    if (rs.getString(1).equals(userA)) {
+                        middleUserA_Rating = rs.getString(2);
+                    } else if (rs.getString(1).equals(userB)) {
+                        middleUserB_Rating = rs.getString(2);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            // 5. Get media_title of that middleTitleID
+            String middleTitle = "";
+            rs = mainFile.runFasterSQLString("SELECT media_title FROM mediacollection WHERE media_id = 'tt0034405';");
+            try {
+                if (rs.next()) {
+                    middleTitle = rs.getString(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            
+            // Check variables in terminal
+            System.out.println("UserA: " + userA + " | UserA_Rating: " + userA_rating + "\nUserB: " + userB + " | UserB_Rating: " + userB_rating);
+            System.out.println("Intermediate movie: " + middleTitle + " | UserARated: " + middleUserA_Rating + " | UserBRated: " + middleUserB_Rating);
+
+            // Display
+            foundTitles.add("Shortest Chain:");
+            foundTitles.add("     " + firstTitle + " -> " + middleTitle + " -> " + secondTitle);
+            foundTitles.add(firstTitle + " was rated " + userA_rating + " stars by user " + userA + ".");
+            foundTitles.add("     User " + userA + " also rated the title " + middleTitle + " highly with " + middleUserA_Rating + " stars. ");
+            foundTitles.add("     " + middleTitle + " was rated " + middleUserB_Rating + " stars by user " + userB + " who also rated " + secondTitle + " " + userB_rating + " stars.");
+            foundTitles.add("The shortest chain between these two titles then is " + firstTitle + " to " + userA);
+            foundTitles.add("     to " + middleTitle + " to " + userB + " to " + secondTitle + ".");
+
+            foundTitlesList.setListData(foundTitles.toArray());
+            foundTitlesList.repaint();
+            scroll_pane_title_list.repaint();
+
+            mainFile.closeConn();
         }
+
     }
 }

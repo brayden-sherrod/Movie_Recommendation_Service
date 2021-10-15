@@ -72,4 +72,44 @@ public class MainFile {
         
         return result;
     }
+
+    /* The following 3 methods can be used for any features of the GUI that need to run multiple commands.
+       it separates opening the connection, running an sql statement, and closing the connection */
+    Connection connQuick = null;
+
+    public void openConn() {
+        // STEP 1: Connecting to the database
+        try {
+            Class.forName("org.postgresql.Driver");
+            connQuick = DriverManager.getConnection("jdbc:postgresql://csce-315-db.engr.tamu.edu/csce315903_11db",
+                    "csce315903_11user", "new_password");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("Opened quicker database connection successfully");
+    }
+
+    public ResultSet runFasterSQLString(String inputSQLString) {
+        ResultSet result = null;
+        try {
+            Statement stmt = connQuick.createStatement();   // create a statement object
+            String sqlStatement = inputSQLString;           // create an SQL statement
+            result = stmt.executeQuery(sqlStatement);       // send statement to DBMS
+
+        } catch (Exception e) {
+            System.out.println("Error accessing Database with Quicker Connection");
+        }
+        return result;
+    }
+
+    public void closeConn() {
+        try {
+            connQuick.close();
+            System.out.println("Quicker database connection closed.");
+        } catch(Exception e) {
+            System.out.println("Quicker Connection NOT Closed.");
+        }
+    }
 }
