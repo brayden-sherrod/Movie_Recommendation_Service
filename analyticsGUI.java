@@ -187,10 +187,10 @@ public class analyticsGUI extends JFrame {
         String firstTitle = title1.getText();
         String secondTitle = title2.getText();
 
-        // STEP 1: Check if title1 is rated by any customers
+        // STEP 1: Check if title1 is rated HIGHLY (4 or 5) by any customers
         MainFile mainFile = new MainFile();
         int title1RatingCount = 0;
-        ResultSet rs = mainFile.runSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + firstTitle + "');");
+        ResultSet rs = mainFile.runSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + firstTitle + "') AND A.customer_rating >= 4;");
         try {
             while (rs.next()) {
                 long count = rs.getLong(1);
@@ -200,9 +200,9 @@ public class analyticsGUI extends JFrame {
             e.printStackTrace();
         }
 
-        // STEP 2: Check if title2 is rated by any customers
+        // STEP 2: Check if title2 is rated HIGHLY (4 or 5) by any customers
         int title2RatingCount = 0;
-        rs = mainFile.runSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + secondTitle + "');");
+        rs = mainFile.runSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + secondTitle + "') AND A.customer_rating >= 4;");
         try {
             while (rs.next()) {
                 long count = rs.getLong(1);
@@ -214,14 +214,14 @@ public class analyticsGUI extends JFrame {
         
         // STEP 3: Depending on ratings validity for title1 and title2, continue feature functionality
         if ( title1RatingCount==0 && title2RatingCount==0 ) { 
-            JOptionPane.showMessageDialog(null, "Title 1 and Title 2 have no ratings. Enter different titles.");
+            JOptionPane.showMessageDialog(null, "Title 1 and Title 2 have no high ratings. Enter different titles.");
         } else if (title1RatingCount==0 && title2RatingCount>0) {
-            JOptionPane.showMessageDialog(null, "Title 1 has no ratings. Enter a different title.");
+            JOptionPane.showMessageDialog(null, "Title 1 has no high ratings. Enter a different title.");
         } else if (title1RatingCount>0 && title2RatingCount==0) {
-            JOptionPane.showMessageDialog(null, "Title 2 has no ratings. Enter a different title.");
+            JOptionPane.showMessageDialog(null, "Title 2 has no high ratings. Enter a different title.");
         } else { // Successful - Titles have ratings. 
 
-            // 1. Get first chain link
+            // 1. Get first chain link (Find a user that rated title1 highly)
             String userA = "";
             String userA_rating = "";
             rs = mainFile.runSQLString("SELECT B.customer_id, B.customer_rating FROM mediacollection A INNER JOIN customersratings B ON A.media_id = B.media_id WHERE B.customer_rating >= 4 AND media_title = '" + firstTitle + "' ORDER BY customer_rating DESC;");
@@ -229,14 +229,24 @@ public class analyticsGUI extends JFrame {
                 if (rs.next()) {
                     userA = rs.getString(1);
                     userA_rating = rs.getString(2);
-                    //foundTitles.add("CUSTOMER=" + rs.getArray(1) + "; RATING=" + rs.getArray(2) + "\n");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
-            System.out.println("CUSTOMER= " + userA + "\nRATING= " + userA_rating + "\n");
-
+            // 2. Second chain link (Find a user that rated title2 highly)
+            String userB = "";
+            String userB_rating = "SELECT B.customer_id, B.customer_rating FROM mediacollection A INNER JOIN customersratings B ON A.media_id = B.media_id WHERE B.customer_rating >= 4 AND media_title = '" + secondTitle + "' ORDER BY customer_rating DESC;";
+            rs = mainFile.runSQLString("");
+            try {
+                if (rs.next()) {
+                    userB = rs.getString(1);
+                    userB_rating = rs.getString(2);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            // 3. Find a different title that userA rated highly (that is not title1 or title2)
+            
         }
         // Display the titles
         foundTitlesList.setListData(foundTitles.toArray());
