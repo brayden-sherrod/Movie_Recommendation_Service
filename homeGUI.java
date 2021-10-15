@@ -167,13 +167,13 @@ public class homeGUI extends JFrame {
     //TODO - Daniel
     public void choiceFunc() {
 
-        arr_list_watch_hist.clear();
+        arr_list_rec.clear();
         recommendedForYou.setText("Viewer Choice");
 
         MainFile mainFile = new MainFile();
 
         ResultSet rs = mainFile.runSQLString(
-                "SELECT genre FROM (SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customersratings.customer_id = '923517') AS mergedTable GROUP BY genre ORDER BY COUNT(*) DESC LIMIT 3;");
+                "SELECT genre FROM (SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customersratings.customer_id = '" + receivedID + "') AS mergedTable GROUP BY genre ORDER BY COUNT(*) DESC LIMIT 3;");
                 //"SELECT genre FROM (SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE
                 //customersratings.customer_id = '923517') AS mergedTable GROUP BY genre ORDER BY COUNT(*) DESC LIMIT 3;"
         // SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id;
@@ -188,9 +188,9 @@ public class homeGUI extends JFrame {
 
         // SELECT * FROM mediagenres WHERE mediagenres.genre = 'Comedy';
 
-        String favoriteGenre;
-        String secondFavGenre;
-        String thirdFaveGenre;
+        String favoriteGenre = "";
+        String secondFavGenre = "";
+        String thirdFaveGenre = "";
 
         try {
             rs.next();
@@ -211,36 +211,54 @@ public class homeGUI extends JFrame {
 
         
         // SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = 'Comedy' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '923517')) AS mergedTable;
-        // SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = 'Comedy' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '923517') AND mediacollection.average_rating > 7.0) AS mergedTable;
+        // SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = 'Comedy' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '923517') AND mediacollection.average_rating > 9.0) AS mergedTable;
 
-        ResultSet rs1 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + favoriteGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 7.0) AS mergedTable;");
+        ResultSet rs1 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + favoriteGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 9.0) AS mergedTable LIMIT 10;");
 
         //favorite genre result set
 
 
-        ResultSet rs2 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + secondFavGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 7.0) AS mergedTable;");
+        ResultSet rs2 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + secondFavGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 9.0) AS mergedTable LIMIT 10;");
 
         // second favorite genre result set
 
 
-        ResultSet rs3 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + thirdFaveGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 7.0) AS mergedTable;");
+        ResultSet rs3 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + thirdFaveGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 9.0) AS mergedTable LIMIT 10;");
 
         //third favorite genre result set
+        
+        try {
+            while(rs1.next()){
+                arr_list_rec.add(rs1.getString("media_title") + "\n");
+            }
 
+            while(rs2.next()){
+                arr_list_rec.add(rs2.getString("media_title") + "\n");
+            }
 
+            while(rs3.next()){
+                arr_list_rec.add(rs3.getString("media_title") + "\n");
+            }
 
+            // for(int i = 0; i < arr_list_watch_hist.size(); i++){
+            //     System.out.println(arr_list_watch_hist.get(i));
+            // }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        if (arr_list_watch_hist.isEmpty()) {
+        if (arr_list_rec.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No Titles Found");
         }
 
-        jList_watch_hist.setListData(arr_list_watch_hist.toArray());
-        jList_watch_hist.repaint();
-        scroll_pane_watch_hist.repaint();
+        jList_rec.setListData(arr_list_rec.toArray());
+        jList_rec.repaint();
+        scroll_pane_rec.repaint();
     }
 
     public void bewareFunc() {
-        arr_list_watch_hist.clear();
+        arr_list_rec.clear();
         recommendedForYou.setText("Viewer Beware");
 
         // MainFile mainFile = new MainFile();
