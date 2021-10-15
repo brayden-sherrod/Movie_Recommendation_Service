@@ -58,6 +58,8 @@ public class analyticsGUI extends JFrame {
         title1.setEditable(true);
         title2.setEditable(true);
         enterButton.addActionListener(e -> enterInfo());
+
+        enterTomato.addActionListener(e -> enterTitles());
         
         // Back to welcome page button
         btn_back_to_welc.setBounds(10, 10, 200, 25);
@@ -181,27 +183,50 @@ public class analyticsGUI extends JFrame {
     public void enterTitles(){
         foundTitles.clear();
 
+        // NOTE: This class method assumes that the user will not input any typos
         String firstTitle = title1.getText();
         String secondTitle = title2.getText();
 
-        // STEP 1: Check if both titles are rated by customers
+        // STEP 1: Check if title1 is rated by any customers
         MainFile mainFile = new MainFile();
-        ResultSet rs = mainFile.runSQLString("TO DO COMMAND");
-        int titleValidityCode = 0;   // 0=before scanned for title ratings; 1=first title not found; 2=second title not found; 3=both titles found
+        int title1RatingCount = 0;
+        ResultSet rs = mainFile.runSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + firstTitle + "');");
         try {
             while (rs.next()) {
-                foundTitles.add(rs.getString("media_title") + "\n");
+                long count = rs.getLong(1);
+                title1RatingCount = (int)count;
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        // STEP 2: Check if title2 is rated by any customers
+        int title2RatingCount = 0;
+        rs = mainFile.runSQLString("SELECT COUNT(*) FROM customersratings A WHERE A.media_id in (SELECT B.media_id FROM mediacollection B WHERE b.media_title = '" + secondTitle + "');");
+        try {
+            while (rs.next()) {
+                long count = rs.getLong(1);
+                title2RatingCount = (int)count;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Title1RatingCount=" + title1RatingCount + "\nTitle2RatingCount=" + title2RatingCount);
+        // STEP 3: Depending on ratings validity for title1 and title2, continue feature functionality
+        if ( title1RatingCount==0 && title2RatingCount==0 ) { 
+            JOptionPane.showMessageDialog(null, "Title 1 and Title 2 have no ratings. Enter different titles.");
+        } else if (title1RatingCount==0 && title2RatingCount>0) {
+            JOptionPane.showMessageDialog(null, "Title 1 has no ratings. Enter a different title.");
+        } else if (title1RatingCount>0 && title2RatingCount==0) {
+            JOptionPane.showMessageDialog(null, "Title 2 has no ratings. Enter a different title.");
+        } else { // Successful - Titles have ratings. 
+
         }
         
         // Display the titles
         foundTitlesList.setListData(foundTitles.toArray());
         foundTitlesList.repaint();
         scroll_pane_title_list.repaint();
-        for (int i = 0; i < foundTitles.size(); i++) {
-            System.out.println(foundTitles.get(i));
-        }
+
     }
 }
