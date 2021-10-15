@@ -259,22 +259,24 @@ public class homeGUI extends JFrame {
 
         MainFile mainFile = new MainFile();
 
-        ResultSet rs = mainFile.runSQLString(
-                "SELECT genre FROM (SELECT * FROM mediagenres JOIN customersratings ON mediagenres.media_id=customersratings.media_id WHERE customersratings.customer_id = '" + receivedID + "') AS mergedTable GROUP BY genre ORDER BY COUNT(*) DESC LIMIT 3;");
+        // 2625420
+        // 2439493
+        // (have many occurences where they dislike same movies) 266
 
-        String favoriteGenre = "";
-        String secondFavGenre = "";
-        String thirdFaveGenre = "";
+        // SELECT COUNT(*) FROM (SELECT * FROM customersratings WHERE customer_id = '923517') AS A INNER JOIN (SELECT * FROM customersratings WHERE customer_id = '2625420') AS B ON A.customer_rating < 3 AND B.customer_rating< 3 AND A.media_id = B.media_id;
+
+        ResultSet rs = mainFile.runSQLString(
+                "SELECT customer_id FROM (SELECT second.customer_id FROM (SELECT * FROM customersratings WHERE customer_id = '" + receivedID + "') AS first JOIN (SELECT * FROM customersratings) AS second ON first.customer_rating < 3 AND second.customer_rating < 3 AND first.media_id=second.media_id) AS final GROUP BY customer_id ORDER BY COUNT(*) DESC LIMIT 2;");
+
+        
+        String dislike_match = "";
 
         try {
             rs.next();
-            favoriteGenre = rs.getString("genre");
-
             rs.next();
-            secondFavGenre = rs.getString("genre");
+            dislike_match = rs.getString("customer_id");
 
-            rs.next();
-            thirdFaveGenre = rs.getString("genre");
+            System.out.println(dislike_match);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -282,35 +284,22 @@ public class homeGUI extends JFrame {
 
         //* SECOND QUERY -----------------
 
-        //favorite genre result set
-        ResultSet rs1 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + favoriteGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 9.0) AS mergedTable LIMIT 10;");
+        // SELECT media_title FROM (SELECT * FROM (SELECT * FROM (SELECT media_id FROM customersratings WHERE customer_id = 'USERTWO' AND customer_rating < 3) AS first WHERE first.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customer_id = 'USERONE')) AS final JOIN mediacollection ON final.media_id=mediacollection.media_id) AS finaltwo;
+        ResultSet rs2 = mainFile.runSQLString(
+                "SELECT media_title FROM (SELECT * FROM (SELECT * FROM (SELECT media_id FROM customersratings WHERE customer_id = '" + dislike_match + "' AND customer_rating < 3) AS first WHERE first.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customer_id = '" + receivedID + "')) AS final JOIN mediacollection ON final.media_id=mediacollection.media_id) AS finaltwo LIMIT 30;");
 
-        // second favorite genre result set
-        ResultSet rs2 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + secondFavGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 9.0) AS mergedTable LIMIT 10;");
-
-        //third favorite genre result set
-        ResultSet rs3 = mainFile.runSQLString("SELECT media_title FROM (SELECT * FROM mediacollection JOIN mediagenres ON mediacollection.media_id=mediagenres.media_id WHERE mediagenres.genre = '" + thirdFaveGenre + "' AND mediacollection.media_id NOT IN (SELECT media_id FROM customerswatchedlist WHERE customerswatchedlist.customer_id = '" + receivedID + "') AND mediacollection.average_rating > 9.0) AS mergedTable LIMIT 10;");
-        
         try {
-            while(rs1.next()){
-                arr_list_rec.add(rs1.getString("media_title") + "\n");
-            }
-
             while(rs2.next()){
                 arr_list_rec.add(rs2.getString("media_title") + "\n");
             }
-
-            while(rs3.next()){
-                arr_list_rec.add(rs3.getString("media_title") + "\n");
-            }
-
-            // for(int i = 0; i < arr_list_watch_hist.size(); i++){
-            //     System.out.println(arr_list_watch_hist.get(i));
-            // }
             
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        // for(int i = 0; i < arr_list_rec.size(); i++){
+        //     System.out.println(arr_list_rec.get(i));
+        // 
 
         if (arr_list_rec.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No Titles Found");
