@@ -69,7 +69,7 @@ public class analyticsGUI extends JFrame {
         titleText.setBounds(270, 20, 200, 30);
         scroll_pane_title_list.setBounds(20, 60, 650, 240);
 
-        top10Label.setBounds(490, 300, 120, 40);
+        top10Label.setBounds(480, 300, 140, 40);
         startField.setBounds(420, 360, 120, 40);
         startLabel.setBounds(460, 320, 120, 40);
         endLabel.setBounds(580, 320, 120, 40);
@@ -182,7 +182,28 @@ public class analyticsGUI extends JFrame {
 
     //* Brayden
     public void showPairs(){
+        titleText.setText("HollyWood Pairs");
+        foundTitles.clear();
         
+        MainFile mainFile = new MainFile();
+
+        //Connect to database
+        ResultSet rs = mainFile.runSQLString("SELECT DISTINCT actor1.name as actor_1_name, actor2.name as actor_2_name, avg(average_rating) as avg_rating FROM mediacrewmembers crew1, mediacrewmembers crew2, crewmembers actor1, crewmembers actor2, mediacollection media1 WHERE crew1.media_id = crew2.media_id AND crew1.media_id = media1.media_id AND crew1.crew_id = actor1.crew_id AND crew2.crew_id = actor2.crew_id AND actor1.name < actor2.name GROUP BY actor1.name, actor2.name ORDER BY avg_rating desc LIMIT 10;");
+        try{
+            while(rs.next()){
+                foundTitles.add(rs.getString("actor_1_name") + "   " + rs.getString("actor_2_name") + "\n");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //Display found titles
+        foundTitlesList.setListData(foundTitles.toArray());
+        foundTitlesList.repaint();
+        scroll_pane_title_list.repaint();
+        for(int i = 0; i < foundTitles.size(); ++i){
+            System.out.println(foundTitles.get(i));
+        }
     }
 
     //* Rose
